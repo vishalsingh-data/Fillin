@@ -22,8 +22,8 @@ Whether you're typing your email (`/email`), a canned customer support response 
 
 ##  Key Features
 
-- ⚡ **Instant Snippet Expansion**: Type your snippet trigger (e.g. `/email`) and hit `Ctrl + Space` to expand it inline.
-- 🔌 **Universal DOM Adapters**:
+-  **Instant Snippet Expansion**: Type your snippet trigger (e.g. `/email`) and hit `Ctrl + Space` to expand it inline.
+-  **Universal DOM Adapters**:
   - **Standard Inputs & Textareas**: Full support for `<input>` and `<textarea>` elements.
   - **React-Controlled Fields**: Bypasses React's internal value setter override (`Object.getOwnPropertyDescriptor`) so synthetic events bubble naturally.
   - **Rich-Text & ContentEditable Editors**: Native support for complex wrappers like Notion, Gmail, and Google Docs (`isContentEditable`).
