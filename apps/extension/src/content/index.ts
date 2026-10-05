@@ -1,4 +1,4 @@
-import { detectTrigger, replaceTrigger } from '@fillin/shared';
+import { detectTrigger } from '@fillin/shared';
 
 let snippetsCache: Record<string, string> = {};
 let triggersCache: string[] = [];
@@ -12,15 +12,17 @@ export function updateCache(snippets: { trigger: string, content: string }[]) {
   }
 }
 
+import { AdapterFactory } from './adapters/AdapterFactory';
+
 export function handleKeyDown(e: KeyboardEvent) {
   if (e.key !== 'Tab') return;
 
   const activeEl = document.activeElement;
-  if (!activeEl) return;
-
-  if (activeEl instanceof HTMLInputElement || activeEl instanceof HTMLTextAreaElement) {
-    const text = activeEl.value;
-    const cursor = activeEl.selectionStart;
+  const adapter = AdapterFactory.getAdapter(activeEl);
+  
+  if (adapter) {
+    const text = adapter.getText();
+    const cursor = adapter.getCursorPosition();
 
     if (cursor === null) return;
 
@@ -29,14 +31,7 @@ export function handleKeyDown(e: KeyboardEvent) {
       const content = snippetsCache[detection.trigger];
       if (content !== undefined) {
         e.preventDefault();
-        
-        const result = replaceTrigger(text, detection, content);
-        
-        activeEl.value = result.text;
-        activeEl.selectionStart = result.cursorPosition;
-        activeEl.selectionEnd = result.cursorPosition;
-        
-        activeEl.dispatchEvent(new Event('input', { bubbles: true }));
+        adapter.replaceText(detection.start, detection.end, content);
       }
     }
   }
