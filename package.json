@@ -1,0 +1,19 @@
+{
+  "name": "fillin-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json}\""
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.37.5",
+    "prettier": "^3.3.3",
+    "turbo": "^2.1.2",
+    "typescript": "^5.6.2"
+  },
+  "packageManager": "pnpm@12.9.1"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@fillin/landing-backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "lint": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fillin/shared": "workspace:*",
+    "fastify": "^4.26.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "ts-node": "^10.9.2",
+    "eslint": "^8.57.0",
+    "vitest": "^1.4.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@types/node": "^20.11.25"
+  }
+}

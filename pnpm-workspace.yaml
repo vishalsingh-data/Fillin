@@ -1,0 +1,6 @@
+packages:
+  - "apps/*"
+  - "apps/landing/*"
+  - "packages/*"
+allowBuilds:
+  esbuild: true
