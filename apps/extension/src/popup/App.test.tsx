@@ -37,7 +37,7 @@ describe('Snippet Management UI', () => {
     
     // Empty state
     await waitFor(() => {
-      expect(screen.getByText('No snippets yet. Create one!')).toBeInTheDocument();
+      expect(screen.getByText('No snippets yet')).toBeInTheDocument();
     });
 
     // With snippets
@@ -111,7 +111,7 @@ describe('Snippet Management UI', () => {
     });
 
     // Click edit on the first snippet (email)
-    const editButtons = screen.getAllByTitle('Edit');
+    const editButtons = screen.getAllByTitle('Edit snippet');
     fireEvent.click(editButtons[0]);
 
     expect(screen.getByText('Edit Snippet')).toBeInTheDocument();
@@ -135,7 +135,7 @@ describe('Snippet Management UI', () => {
       expect(screen.getByText('/email')).toBeInTheDocument();
     });
 
-    const deleteButtons = screen.getAllByTitle('Delete');
+    const deleteButtons = screen.getAllByTitle('Delete snippet');
     fireEvent.click(deleteButtons[0]);
 
     await waitFor(() => {

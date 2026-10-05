@@ -60,17 +60,17 @@ export function App() {
               setSearchQuery={setSearchQuery}
             />
           </div>
-          <div className="p-4 border-t border-gray-100 bg-white">
+          <div className="p-5 border-t border-gray-100 bg-white">
             <button
               onClick={handleNew}
-              className="w-full flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm"
+              className="w-full flex items-center justify-center space-x-2 bg-gray-900 hover:bg-black text-white py-2.5 rounded-xl font-medium text-sm transition-all shadow-sm focus:outline-none focus:ring-4 focus:ring-gray-200"
             >
               <Plus className="w-4 h-4" />
               <span>Create Snippet</span>
             </button>
           </div>
           {error && view === 'list' && (
-            <div className="absolute top-2 left-2 right-2 bg-red-500 text-white text-xs p-2 rounded-lg text-center shadow-lg">
+            <div className="absolute top-4 left-4 right-4 bg-red-50 text-red-600 border border-red-200 text-xs px-3 py-2 rounded-lg text-center shadow-sm font-medium animate-in slide-in-from-top-2">
               {error}
             </div>
           )}

@@ -34,53 +34,57 @@ export function SnippetForm({ snippet, onSave, onCancel, error }: Props) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
-      <div className="flex items-center p-4 border-b border-gray-100">
-        <button onClick={onCancel} className="mr-3 p-1 text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5" />
+    <div className="flex flex-col h-full bg-gray-50/50">
+      <div className="flex items-center p-5 border-b border-gray-100 bg-white">
+        <button 
+          onClick={onCancel} 
+          className="mr-3 p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="w-4 h-4" />
         </button>
-        <h2 className="font-semibold text-gray-800">{snippet ? 'Edit Snippet' : 'New Snippet'}</h2>
+        <h2 className="font-semibold text-gray-900 tracking-tight">{snippet ? 'Edit Snippet' : 'New Snippet'}</h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex-1 flex flex-col p-4 space-y-4">
+      <form onSubmit={handleSubmit} className="flex-1 flex flex-col p-5 space-y-5">
         {localError && (
-          <div className="p-3 bg-red-50 text-red-700 text-xs rounded-lg border border-red-100">
+          <div className="p-3 bg-red-50 text-red-600 text-xs font-medium rounded-lg border border-red-200 shadow-sm">
             {localError}
           </div>
         )}
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Trigger</label>
-          <input
-            type="text"
-            value={trigger}
-            onChange={(e) => {
-              if (!e.target.value.startsWith('/')) {
-                setTrigger('/' + e.target.value.replace(/\//g, ''));
-              } else {
-                setTrigger(e.target.value);
-              }
-            }}
-            placeholder="/email"
-            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none font-mono"
-            autoFocus
-          />
+          <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wider">Trigger</label>
+          <div className="relative">
+            <span className="absolute left-3 top-2.5 font-mono text-gray-400 text-sm">/</span>
+            <input
+              type="text"
+              value={trigger.replace(/^\//, '')}
+              onChange={(e) => {
+                const val = e.target.value.replace(/\//g, '');
+                setTrigger('/' + val);
+              }}
+              placeholder="email"
+              className="w-full pl-7 pr-3 py-2 bg-white border border-gray-200 rounded-xl text-sm font-mono focus:ring-4 focus:ring-purple-500/10 focus:border-purple-400 outline-none transition-all shadow-sm"
+              autoFocus
+            />
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col">
-          <label className="block text-xs font-medium text-gray-700 mb-1">Content</label>
+          <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wider">Content</label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Expansion text..."
-            className="flex-1 w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none resize-none"
+            className="flex-1 w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-4 focus:ring-purple-500/10 focus:border-purple-400 outline-none resize-none transition-all shadow-sm leading-relaxed"
           />
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting || !trigger || trigger === '/'}
-          className="w-full flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center space-x-2 bg-gray-900 hover:bg-black text-white py-2.5 rounded-xl font-medium text-sm transition-all shadow-sm focus:outline-none focus:ring-4 focus:ring-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save className="w-4 h-4" />
           <span>{isSubmitting ? 'Saving...' : 'Save Snippet'}</span>
