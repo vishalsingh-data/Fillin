@@ -1,5 +1,5 @@
 import React from 'react';
-import { WaitlistForm } from './WaitlistForm';
+import { DownloadButtons } from './DownloadButtons';
 
 export const CTA = () => {
   return (
@@ -11,8 +11,8 @@ export const CTA = () => {
         <p className="text-xl text-gray-600 mb-10">
           Join thousands of developers typing faster with Fillin.
         </p>
-        <div className="max-w-md mx-auto">
-          <WaitlistForm />
+        <div className="max-w-2xl mx-auto">
+          <DownloadButtons />
         </div>
       </div>
     </section>

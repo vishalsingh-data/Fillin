@@ -1,6 +1,6 @@
 import React from 'react';
 import { PRODUCT_NAME } from '@fillin/shared';
-import { WaitlistForm } from './WaitlistForm';
+import { DownloadButtons } from './DownloadButtons';
 
 export const Hero = () => {
   return (
@@ -11,10 +11,10 @@ export const Hero = () => {
       <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
         Create shortcuts for anything you type repeatedly. {PRODUCT_NAME} expands your custom snippets across the web instantly.
       </p>
-      <div className="max-w-md mx-auto mb-6">
-        <WaitlistForm />
+      <div className="max-w-2xl mx-auto mb-6">
+        <DownloadButtons />
       </div>
-      <p className="text-sm text-gray-500 font-medium">Free forever. Join the waitlist today.</p>
+      <p className="text-sm text-gray-500 font-medium">Free forever. Local-first. Privacy focused.</p>
     </section>
   );
 };

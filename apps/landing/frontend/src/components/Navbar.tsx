@@ -18,11 +18,11 @@ export const Navbar = () => {
             <a href="#privacy" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Privacy</a>
           </div>
           <div>
-            <a href="#waitlist" onClick={(e) => {
+            <a href="#download" onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }} className="bg-black text-white px-5 py-2 rounded-full font-medium text-sm hover:bg-gray-800 transition-colors focus:outline-none focus:ring-4 focus:ring-gray-200">
-              Join Waitlist
+              Download
             </a>
           </div>
         </div>
