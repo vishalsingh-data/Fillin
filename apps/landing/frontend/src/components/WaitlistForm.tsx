@@ -55,7 +55,7 @@ export const WaitlistForm = () => {
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1 relative">
           <input
-            type="email"
+            type="text"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);

@@ -7,6 +7,9 @@ export class AdapterFactory {
     if (!element) return null;
 
     if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+      if (element instanceof HTMLInputElement && element.type === 'password') {
+        return null;
+      }
       return new TextInputAdapter(element);
     }
 

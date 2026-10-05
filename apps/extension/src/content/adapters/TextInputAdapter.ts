@@ -8,8 +8,32 @@ export class TextInputAdapter implements InputAdapter {
     return this.element.value;
   }
 
+  private withTextType<T>(operation: () => T): T | null {
+    if (this.element instanceof HTMLInputElement) {
+      const type = this.element.type;
+      const supportedTypes = ['text', 'search', 'url', 'tel', 'password'];
+      
+      if (!supportedTypes.includes(type)) {
+        try {
+          this.element.type = 'text';
+          const result = operation();
+          this.element.type = type;
+          return result;
+        } catch (e) {
+          return null;
+        }
+      }
+    }
+    
+    try {
+      return operation();
+    } catch (e) {
+      return null;
+    }
+  }
+
   getCursorPosition(): number | null {
-    return this.element.selectionStart;
+    return this.withTextType(() => this.element.selectionStart);
   }
 
   replaceText(start: number, end: number, newContent: string): void {
@@ -32,8 +56,10 @@ export class TextInputAdapter implements InputAdapter {
       this.element.value = result.text;
     }
     
-    this.element.selectionStart = result.cursorPosition;
-    this.element.selectionEnd = result.cursorPosition;
+    this.withTextType(() => {
+      this.element.selectionStart = result.cursorPosition;
+      this.element.selectionEnd = result.cursorPosition;
+    });
     
     this.element.dispatchEvent(new Event('input', { bubbles: true }));
   }
