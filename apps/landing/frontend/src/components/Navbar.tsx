@@ -18,9 +18,12 @@ export const Navbar = () => {
             <a href="#privacy" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Privacy</a>
           </div>
           <div>
-            <button className="bg-black text-white px-5 py-2 rounded-full font-medium text-sm hover:bg-gray-800 transition-colors focus:outline-none focus:ring-4 focus:ring-gray-200">
-              Add to Chrome
-            </button>
+            <a href="#waitlist" onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }} className="bg-black text-white px-5 py-2 rounded-full font-medium text-sm hover:bg-gray-800 transition-colors focus:outline-none focus:ring-4 focus:ring-gray-200">
+              Join Waitlist
+            </a>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { PRODUCT_NAME } from '@fillin/shared';
-import { ArrowRight, Download } from 'lucide-react';
+import { WaitlistForm } from './WaitlistForm';
 
 export const Hero = () => {
   return (
@@ -11,14 +11,10 @@ export const Hero = () => {
       <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
         Create shortcuts for anything you type repeatedly. {PRODUCT_NAME} expands your custom snippets across the web instantly.
       </p>
-      <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-        <button className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-black text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-800 transition-transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-gray-200">
-          <Download className="w-5 h-5" />
-          <span>Add to Chrome</span>
-          <ArrowRight className="w-5 h-5 ml-1" />
-        </button>
+      <div className="max-w-md mx-auto mb-6">
+        <WaitlistForm />
       </div>
-      <p className="mt-6 text-sm text-gray-500 font-medium">Free forever. No account required.</p>
+      <p className="text-sm text-gray-500 font-medium">Free forever. Join the waitlist today.</p>
     </section>
   );
 };

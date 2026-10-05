@@ -17,7 +17,6 @@ export class TextInputAdapter implements InputAdapter {
     const result = replaceTrigger(originalText, { trigger: '', start, end }, newContent);
     
     // Bypass React's value setter override to ensure 'input' events trigger state updates
-    const prototype = Object.getPrototypeOf(this.element);
     let NativeSetter = null;
     
     // In some environments, the prototype might directly be HTMLInputElement, or we need to grab it from the window

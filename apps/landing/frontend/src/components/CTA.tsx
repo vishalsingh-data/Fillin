@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Download } from 'lucide-react';
+import { WaitlistForm } from './WaitlistForm';
 
 export const CTA = () => {
   return (
@@ -11,11 +11,9 @@ export const CTA = () => {
         <p className="text-xl text-gray-600 mb-10">
           Join thousands of developers typing faster with Fillin.
         </p>
-        <button className="flex mx-auto items-center justify-center space-x-2 bg-black text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-800 transition-transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-gray-200">
-          <Download className="w-5 h-5" />
-          <span>Add to Chrome</span>
-          <ArrowRight className="w-5 h-5 ml-1" />
-        </button>
+        <div className="max-w-md mx-auto">
+          <WaitlistForm />
+        </div>
       </div>
     </section>
   );
