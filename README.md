@@ -1,4 +1,4 @@
-# ⚡ Fillin
+#  Fillin
 
 > **Fill in your own blanks.**  
 > Create instant shortcuts for anything you type repeatedly. Privacy-first, local-first, blazing fast.
@@ -12,7 +12,7 @@
 
 ---
 
-## 📌 Overview
+##  Overview
 
 **Fillin** is a privacy-focused Chrome Extension that expands custom text snippets natively anywhere in your browser using the `Ctrl + Space` hotkey.
 
@@ -20,7 +20,7 @@ Whether you're typing your email (`/email`), a canned customer support response 
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 - ⚡ **Instant Snippet Expansion**: Type your snippet trigger (e.g. `/email`) and hit `Ctrl + Space` to expand it inline.
 - 🔌 **Universal DOM Adapters**:
@@ -28,13 +28,13 @@ Whether you're typing your email (`/email`), a canned customer support response 
   - **React-Controlled Fields**: Bypasses React's internal value setter override (`Object.getOwnPropertyDescriptor`) so synthetic events bubble naturally.
   - **Rich-Text & ContentEditable Editors**: Native support for complex wrappers like Notion, Gmail, and Google Docs (`isContentEditable`).
   - **Restricted Inputs**: Automatically handles cursor position calculation for HTML5 input types (`search`, `url`, `tel`).
-- 🔒 **Zero Data Collection**: Operates strictly on `chrome.storage.local`. No typing data or keystrokes ever leave your browser.
-- 🎨 **Minimal Popup UI**: Sleek, modern extension popup to create, edit, search, and manage shortcuts effortlessly.
-- 🏗️ **Decoupled Monorepo Architecture**: Clean separation between the core shared engine, the extension, and the marketing landing app.
+-  **Zero Data Collection**: Operates strictly on `chrome.storage.local`. No typing data or keystrokes ever leave your browser.
+-  **Minimal Popup UI**: Sleek, modern extension popup to create, edit, search, and manage shortcuts effortlessly.
+-  **Decoupled Monorepo Architecture**: Clean separation between the core shared engine, the extension, and the marketing landing app.
 
 ---
 
-## 🏗️ Monorepo Architecture
+##  Monorepo Architecture
 
 Fillin is structured as a [Turborepo](https://turbo.build/) monorepo powered by `pnpm` workspaces:
 
@@ -91,7 +91,7 @@ flowchart TD
 
 ---
 
-## 🛠️ How It Works Under the Hood
+##  How It Works Under the Hood
 
 ### 1. Trigger Detection Engine ([`packages/shared/src/engine/detector.ts`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/packages/shared/src/engine/detector.ts))
 When `Ctrl + Space` is pressed, Fillin extracts the text preceding the cursor and scans for triggers starting with `/`:
@@ -107,7 +107,7 @@ Uses a repository pattern ([`SnippetRepository`](file:///Users/samprati/Desktop/
 
 ---
 
-## 🚀 Developer Setup & Usage Guide
+##  Developer Setup & Usage Guide
 
 ### Prerequisites
 
@@ -144,7 +144,7 @@ This compiles the extension assets into `apps/extension/dist`.
 2. Enable **Developer mode** using the toggle in the top-right corner.
 3. Click **Load unpacked** in the top-left menu.
 4. Select the build directory: `<path-to-repo>/Fillin/apps/extension/dist`.
-5. 🎉 **Fillin is ready!**
+5.  **Fillin is ready!**
    - Click the extension icon in Chrome to open the popup and add a shortcut (e.g., Trigger: `/email`, Content: `yourname@example.com`).
    - Go to any text box on any webpage, type `/email`, and press `Ctrl + Space`.
 
@@ -180,7 +180,7 @@ pnpm format
 
 ---
 
-## 🔒 Privacy & Security Model
+##  Privacy & Security Model
 
 Fillin is built on a strict **privacy-first design**:
 
@@ -190,7 +190,7 @@ Fillin is built on a strict **privacy-first design**:
 
 ---
 
-## 📄 Architectural Invariants
+##  Architectural Invariants
 
 Developers contributing to Fillin must adhere to the rules defined in [`AGENTS.md`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/AGENTS.md) and [`ARCHITECTURE.md`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/ARCHITECTURE.md):
 
@@ -200,12 +200,12 @@ Developers contributing to Fillin must adhere to the rules defined in [`AGENTS.m
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/development/README.md](docs/development/README.md) before submitting pull requests.
 
 ---
 
-## 📜 License
+##  License
 
 Distributed under the [MIT License](LICENSE).
