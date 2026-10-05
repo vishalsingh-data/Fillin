@@ -22,4 +22,4 @@ Many modern web components encapsulate their inputs inside a Shadow DOM, shieldi
 
 ## 4. Asynchronous Storage Syncing
 
-The background snippets are synced to the content script using `chrome.storage.onChanged`. If a user creates a new snippet in the popup, there is a theoretical delay (usually < 10ms) before the content script receives the update. The content script deliberately maintains a local cache so that it does not need to pause and `await` a storage call during every single `Tab` keydown event, prioritizing fluid typing over instantaneous syncing.
+The background snippets are synced to the content script using `chrome.storage.onChanged`. If a user creates a new snippet in the popup, there is a theoretical delay (usually < 10ms) before the content script receives the update. The content script deliberately maintains a local cache so that it does not need to pause and `await` a storage call during every single `Ctrl+Space` keydown event, prioritizing fluid typing over instantaneous syncing.

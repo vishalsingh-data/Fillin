@@ -2,7 +2,7 @@
 
 **Fill in your own blanks.**
 
-Fillin is a Chrome text expander / personal text shortcut tool. It allows users to create their own custom text snippets and trigger them by typing a shortcut followed by `Tab` anywhere on a supported webpage.
+Fillin is a Chrome text expander / personal text shortcut tool. It allows users to create their own custom text snippets and trigger them by typing a shortcut followed by `Ctrl + Space` anywhere on a supported webpage.
 
 ## Project Structure
 

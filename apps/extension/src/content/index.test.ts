@@ -18,53 +18,53 @@ describe('Content Script Replacer', () => {
     ]);
   });
 
-  const triggerTab = () => {
-    const event = new KeyboardEvent('keydown', { key: 'Tab', cancelable: true });
+  const triggerExpansion = () => {
+    const event = new KeyboardEvent('keydown', { key: ' ', code: 'Space', ctrlKey: true, cancelable: true });
     handleKeyDown(event);
     return event;
   };
 
-  it('intercepts Tab and replaces trigger at the beginning', () => {
+  it('intercepts Ctrl+Space and replaces trigger at the beginning', () => {
     input.value = '/email';
     input.selectionStart = 6;
     input.selectionEnd = 6;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(true);
     expect(input.value).toBe('test@example.com');
     expect(input.selectionStart).toBe(16);
   });
 
-  it('intercepts Tab and replaces trigger in the middle', () => {
+  it('intercepts Ctrl+Space and replaces trigger in the middle', () => {
     input.value = 'Hello /email world';
     input.selectionStart = 12; // immediately after /email
     input.selectionEnd = 12;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(true);
     expect(input.value).toBe('Hello test@example.com world');
     expect(input.selectionStart).toBe(22);
   });
 
-  it('allows default Tab behavior when no trigger matches', () => {
+  it('allows default Ctrl+Space behavior when no trigger matches', () => {
     input.value = 'Hello email world';
     input.selectionStart = 11;
     input.selectionEnd = 11;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(false);
     expect(input.value).toBe('Hello email world');
   });
 
-  it('allows default Tab behavior when trigger is not immediately before cursor', () => {
+  it('allows default Ctrl+Space behavior when trigger is not immediately before cursor', () => {
     input.value = '/email ';
     input.selectionStart = 7;
     input.selectionEnd = 7;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(false);
   });
@@ -74,7 +74,7 @@ describe('Content Script Replacer', () => {
     input.selectionStart = 6;
     input.selectionEnd = 6;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(true);
     expect(input.value).toBe('');
@@ -86,7 +86,7 @@ describe('Content Script Replacer', () => {
     input.selectionStart = 8;
     input.selectionEnd = 8;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(false);
     expect(input.value).toBe('/unknown');
@@ -97,7 +97,7 @@ describe('Content Script Replacer', () => {
     input.selectionStart = 13;
     input.selectionEnd = 13;
 
-    const event = triggerTab();
+    const event = triggerExpansion();
 
     expect(event.defaultPrevented).toBe(true);
     expect(input.value).toBe('/email test@example.com');

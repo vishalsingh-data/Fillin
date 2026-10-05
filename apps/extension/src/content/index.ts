@@ -23,7 +23,7 @@ export function getDeepActiveElement(root: Document | ShadowRoot = document): El
 }
 
 export function handleKeyDown(e: KeyboardEvent) {
-  if (e.key !== 'Tab') return;
+  if (!(e.ctrlKey && e.code === 'Space')) return;
 
   const activeEl = getDeepActiveElement();
   const adapter = AdapterFactory.getAdapter(activeEl);

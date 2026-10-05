@@ -2,8 +2,8 @@
 
 ## Core Philosophy
 - Simple, Fast, Lightweight, Local-first, Privacy-focused, Reliable.
-- Core interaction: Create once. Type shortcut. Press Tab. Done.
-- Minimal MVP scope: Create, edit, delete, search, store locally, expand on Tab.
+- Core interaction: Create once. Type shortcut. Press Ctrl+Space. Done.
+- Minimal MVP scope: Create, edit, delete, search, store locally, expand on Ctrl+Space.
 
 ## Monorepo Layout
 - **Extension** (`apps/extension`): Chrome specific runtime, popup, content scripts, background. Local storage.
