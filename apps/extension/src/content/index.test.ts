@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { handleKeyDown, updateCache } from './index';
+import { handleKeyDown, updateCache, getDeepActiveElement } from './index';
 
 describe('Content Script Replacer', () => {
   let input: HTMLInputElement;
@@ -113,5 +113,21 @@ describe('Content Script Replacer', () => {
 
     expect(event.defaultPrevented).toBe(false);
     expect(input.value).toBe('/email');
+  });
+
+  describe('Shadow DOM Support', () => {
+    it('pierces shadow DOM to find the active element', () => {
+      const host = document.createElement('div');
+      document.body.appendChild(host);
+      
+      const shadowRoot = host.attachShadow({ mode: 'open' });
+      const shadowInput = document.createElement('input');
+      shadowInput.type = 'text';
+      shadowRoot.appendChild(shadowInput);
+      
+      shadowInput.focus();
+      
+      expect(getDeepActiveElement()).toBe(shadowInput);
+    });
   });
 });

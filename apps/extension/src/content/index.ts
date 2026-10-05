@@ -1,4 +1,5 @@
 import { detectTrigger } from '@fillin/shared';
+import { AdapterFactory } from './adapters/AdapterFactory';
 
 let snippetsCache: Record<string, string> = {};
 let triggersCache: string[] = [];
@@ -12,12 +13,19 @@ export function updateCache(snippets: { trigger: string, content: string }[]) {
   }
 }
 
-import { AdapterFactory } from './adapters/AdapterFactory';
+export function getDeepActiveElement(root: Document | ShadowRoot = document): Element | null {
+  const activeEl = root.activeElement;
+  if (!activeEl) return null;
+  if (activeEl.shadowRoot) {
+    return getDeepActiveElement(activeEl.shadowRoot);
+  }
+  return activeEl;
+}
 
 export function handleKeyDown(e: KeyboardEvent) {
   if (e.key !== 'Tab') return;
 
-  const activeEl = document.activeElement;
+  const activeEl = getDeepActiveElement();
   const adapter = AdapterFactory.getAdapter(activeEl);
   
   if (adapter) {
@@ -38,17 +46,28 @@ export function handleKeyDown(e: KeyboardEvent) {
 }
 
 // Initialize only in actual browser environment
-if (typeof document !== 'undefined' && typeof chrome !== 'undefined' && chrome.storage) {
-  chrome.storage.local.get('fillin_snippets', (result) => {
-    const snippets = result['fillin_snippets'] || [];
-    updateCache(snippets);
-  });
+if (typeof document !== 'undefined') {
+  if (typeof chrome !== 'undefined' && chrome.storage) {
+    chrome.storage.local.get('fillin_snippets', (result) => {
+      const snippets = result['fillin_snippets'] || [];
+      updateCache(snippets);
+    });
 
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes['fillin_snippets']) {
-      updateCache(changes['fillin_snippets'].newValue || []);
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area === 'local' && changes['fillin_snippets']) {
+        updateCache(changes['fillin_snippets'].newValue || []);
+      }
+    });
+  } else {
+    try {
+      const data = localStorage.getItem('fillin_snippets');
+      if (data) {
+        updateCache(JSON.parse(data));
+      }
+    } catch (e) {
+      console.error(e);
     }
-  });
+  }
 
   document.addEventListener('keydown', handleKeyDown);
 }

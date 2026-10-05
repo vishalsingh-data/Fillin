@@ -16,7 +16,23 @@ export class TextInputAdapter implements InputAdapter {
     const originalText = this.getText();
     const result = replaceTrigger(originalText, { trigger: '', start, end }, newContent);
     
-    this.element.value = result.text;
+    // Bypass React's value setter override to ensure 'input' events trigger state updates
+    const prototype = Object.getPrototypeOf(this.element);
+    let NativeSetter = null;
+    
+    // In some environments, the prototype might directly be HTMLInputElement, or we need to grab it from the window
+    if (this.element instanceof HTMLTextAreaElement) {
+      NativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+    } else {
+      NativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+    }
+
+    if (NativeSetter) {
+      NativeSetter.call(this.element, result.text);
+    } else {
+      this.element.value = result.text;
+    }
+    
     this.element.selectionStart = result.cursorPosition;
     this.element.selectionEnd = result.cursorPosition;
     
