@@ -2,6 +2,7 @@
   "name": "@fillin/landing-frontend",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,18 +12,24 @@
   },
   "dependencies": {
     "@fillin/shared": "workspace:*",
+    "lucide-react": "^1.52.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.6.1",
+    "eslint": "^8.57.0",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.6.2",
     "vite": "^5.2.0",
-    "eslint": "^8.57.0",
-    "vitest": "^1.4.0",
-    "@typescript-eslint/parser": "^7.1.0",
-    "@typescript-eslint/eslint-plugin": "^7.1.0"
+    "vitest": "^1.4.0"
   }
 }

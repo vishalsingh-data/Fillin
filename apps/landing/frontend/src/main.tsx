@@ -1,8 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { PRODUCT_NAME } from '@fillin/shared';
-
-const App = () => <div>Welcome to {PRODUCT_NAME} Landing Page</div>;
+import { App } from './App';
+import './index.css';
 
 const container = document.getElementById('root');
 if (container) {
