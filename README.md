@@ -8,7 +8,7 @@
 ![Manifest V3](https://img.shields.io/badge/Chrome_Extension-Manifest_V3-34a853?logo=googlechrome)
 ![Fastify](https://img.shields.io/badge/Backend-Fastify_4-000000?logo=fastify)
 ![Turborepo](https://img.shields.io/badge/Monorepo-Turborepo-ef4444?logo=turborepo)
-![License](https://img.shields.io/badge/License-MIT-green)
+
 
 ---
 
