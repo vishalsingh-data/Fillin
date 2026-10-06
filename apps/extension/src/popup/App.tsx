@@ -4,6 +4,7 @@ import { useSnippets } from '../hooks/useSnippets';
 import { snippetService } from '../services';
 import { SnippetList } from '../components/SnippetList';
 import { SnippetForm } from '../components/SnippetForm';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 import { Plus } from 'lucide-react';
 
 export function App() {
@@ -11,6 +12,10 @@ export function App() {
   const [view, setView] = useState<'list' | 'form'>('list');
   const [editingSnippet, setEditingSnippet] = useState<Snippet | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Confirm dialog state
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const pendingDeleteSnippet = snippets.find(s => s.id === pendingDeleteId);
 
   const handleNew = () => {
     setEditingSnippet(undefined);
@@ -30,10 +35,20 @@ export function App() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Delete this snippet?')) {
-      await deleteSnippet(id);
+  // Instead of confirm(), open custom dialog
+  const handleDelete = (id: string) => {
+    setPendingDeleteId(id);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (pendingDeleteId) {
+      await deleteSnippet(pendingDeleteId);
+      setPendingDeleteId(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setPendingDeleteId(null);
   };
 
   /* ── Loading state ── */
@@ -44,7 +59,6 @@ export function App() {
         style={{ background: 'linear-gradient(160deg, #0f0a1a 0%, #130d24 50%, #0d0a1f 100%)' }}
       >
         <div className="flex flex-col items-center space-y-3 animate-fade-in">
-          {/* Spinning logo */}
           <div
             className="w-10 h-10 rounded-2xl flex items-center justify-center"
             style={{
@@ -105,7 +119,7 @@ export function App() {
           </div>
 
           {/* Error toast */}
-          {error && view === 'list' && (
+          {error && (
             <div
               className="absolute top-3 left-3 right-3 px-3 py-2 rounded-xl text-xs font-medium text-center animate-fade-in"
               style={{
@@ -117,6 +131,15 @@ export function App() {
             >
               {error}
             </div>
+          )}
+
+          {/* Custom confirm dialog (rendered on top) */}
+          {pendingDeleteId && pendingDeleteSnippet && (
+            <ConfirmDialog
+              trigger={pendingDeleteSnippet.trigger}
+              onConfirm={handleConfirmDelete}
+              onCancel={handleCancelDelete}
+            />
           )}
         </>
       ) : (
