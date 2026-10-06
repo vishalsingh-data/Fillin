@@ -58,7 +58,7 @@ export const ProductDemo = () => {
               <div className="flex items-center">
                 <kbd className="px-2 py-1 bg-white border border-gray-200 rounded shadow-sm text-xs font-mono mr-2">/email</kbd>
                 <span>+</span>
-                <kbd className="px-2 py-1 bg-white border border-gray-200 rounded shadow-sm text-xs font-mono mx-2">Tab</kbd>
+                <kbd className="px-2 py-1 bg-white border border-gray-200 rounded shadow-sm text-xs font-mono mx-2">Ctrl + Space</kbd>
               </div>
               <span className="text-gray-300">→</span>
               <span className="text-gray-900">your.name@example.com</span>

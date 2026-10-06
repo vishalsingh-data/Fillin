@@ -14,8 +14,8 @@ export const HowItWorks = () => {
     },
     {
       step: '03',
-      title: 'Press Tab',
-      description: 'Hit Tab to instantly expand your shortcut into the full text.'
+      title: 'Press Ctrl + Space',
+      description: 'Hit Ctrl + Space to instantly expand your shortcut into the full text.'
     }
   ];
 
