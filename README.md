@@ -9,6 +9,13 @@
 ![Fastify](https://img.shields.io/badge/Backend-Fastify_4-000000?logo=fastify)
 ![Turborepo](https://img.shields.io/badge/Monorepo-Turborepo-ef4444?logo=turborepo)
 
+---
+
+## 📥 Download & Install
+
+**👉 [Download the Fillin Extension Here](https://fillin-eta.vercel.app/)**
+
+Follow the simple 3-step guide on the website to install the extension directly into Chrome!
 
 ---
 
