@@ -12,71 +12,37 @@ export function App() {
   const [view, setView] = useState<'list' | 'form'>('list');
   const [editingSnippet, setEditingSnippet] = useState<Snippet | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Confirm dialog state
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+
   const pendingDeleteSnippet = snippets.find(s => s.id === pendingDeleteId);
 
-  const handleNew = () => {
-    setEditingSnippet(undefined);
-    setView('form');
-  };
-
-  const handleEdit = (snippet: Snippet) => {
-    setEditingSnippet(snippet);
-    setView('form');
-  };
+  const handleNew = () => { setEditingSnippet(undefined); setView('form'); };
+  const handleEdit = (snippet: Snippet) => { setEditingSnippet(snippet); setView('form'); };
+  const handleDelete = (id: string) => setPendingDeleteId(id);
 
   const handleSave = async (trigger: string, content: string) => {
-    if (editingSnippet) {
-      await updateSnippet(editingSnippet.id, trigger, content);
-    } else {
-      await createSnippet(trigger, content);
-    }
-  };
-
-  // Instead of confirm(), open custom dialog
-  const handleDelete = (id: string) => {
-    setPendingDeleteId(id);
+    if (editingSnippet) await updateSnippet(editingSnippet.id, trigger, content);
+    else await createSnippet(trigger, content);
   };
 
   const handleConfirmDelete = async () => {
-    if (pendingDeleteId) {
-      await deleteSnippet(pendingDeleteId);
-      setPendingDeleteId(null);
-    }
+    if (pendingDeleteId) { await deleteSnippet(pendingDeleteId); setPendingDeleteId(null); }
   };
 
-  const handleCancelDelete = () => {
-    setPendingDeleteId(null);
-  };
-
-  /* ── Loading state ── */
+  /* ── Loading ── */
   if (loading) {
     return (
-      <div
-        className="flex items-center justify-center h-full"
-        style={{ background: 'linear-gradient(160deg, #0f0a1a 0%, #130d24 50%, #0d0a1f 100%)' }}
-      >
-        <div className="flex flex-col items-center space-y-3 animate-fade-in">
-          <div
-            className="w-10 h-10 rounded-2xl flex items-center justify-center"
-            style={{
-              background: 'linear-gradient(135deg, #7c3aed, #9333ea)',
-              boxShadow: '0 0 24px rgba(139,92,246,0.4)',
-            }}
-          >
+      <div className="flex items-center justify-center h-full bg-white">
+        <div className="flex flex-col items-center space-y-4 animate-fade-in">
+          <div className="w-10 h-10 rounded-2xl bg-black flex items-center justify-center shadow-[0_4px_16px_-4px_rgba(0,0,0,0.3)]">
             <span className="text-white font-bold text-lg">F</span>
           </div>
-          <div className="flex space-x-1">
+          <div className="flex space-x-1.5">
             {[0, 1, 2].map(i => (
               <span
                 key={i}
-                className="w-1.5 h-1.5 rounded-full"
-                style={{
-                  background: 'rgba(139,92,246,0.7)',
-                  animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite`,
-                }}
+                className="w-1.5 h-1.5 rounded-full bg-gray-300 dot-pulse"
+                style={{ animationDelay: `${i * 0.18}s` }}
               />
             ))}
           </div>
@@ -85,9 +51,9 @@ export function App() {
     );
   }
 
-  /* ── Main layout ── */
+  /* ── Main ── */
   return (
-    <div className="h-full relative flex flex-col overflow-hidden">
+    <div className="h-full relative flex flex-col overflow-hidden bg-white">
       {view === 'list' ? (
         <>
           <div className="flex-1 overflow-hidden">
@@ -101,17 +67,11 @@ export function App() {
           </div>
 
           {/* Footer CTA */}
-          <div
-            className="px-4 py-3"
-            style={{
-              borderTop: '1px solid rgba(255,255,255,0.06)',
-              background: 'rgba(15,10,26,0.9)',
-              backdropFilter: 'blur(12px)',
-            }}
-          >
+          <div className="px-4 py-3 border-t border-gray-100 bg-white">
             <button
               onClick={handleNew}
-              className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-xl font-semibold text-sm text-white focus:outline-none glow-btn"
+              className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-xl font-semibold text-sm text-white bg-gray-900
+                         hover:bg-black transition-all shadow-sm focus:outline-none focus:ring-4 focus:ring-gray-200"
             >
               <Plus className="w-4 h-4" />
               <span>Create Snippet</span>
@@ -120,25 +80,18 @@ export function App() {
 
           {/* Error toast */}
           {error && (
-            <div
-              className="absolute top-3 left-3 right-3 px-3 py-2 rounded-xl text-xs font-medium text-center animate-fade-in"
-              style={{
-                background: 'rgba(239,68,68,0.15)',
-                border: '1px solid rgba(239,68,68,0.3)',
-                color: '#f87171',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
+            <div className="absolute top-3 left-3 right-3 px-3 py-2 rounded-xl text-xs font-medium text-center animate-fade-in
+                            bg-red-50 border border-red-200 text-red-600">
               {error}
             </div>
           )}
 
-          {/* Custom confirm dialog (rendered on top) */}
+          {/* Confirm delete dialog */}
           {pendingDeleteId && pendingDeleteSnippet && (
             <ConfirmDialog
               trigger={pendingDeleteSnippet.trigger}
               onConfirm={handleConfirmDelete}
-              onCancel={handleCancelDelete}
+              onCancel={() => setPendingDeleteId(null)}
             />
           )}
         </>
@@ -150,13 +103,6 @@ export function App() {
           error={error}
         />
       )}
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1); }
-        }
-      `}</style>
     </div>
   );
 }
