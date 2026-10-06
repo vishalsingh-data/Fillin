@@ -1,4 +1,4 @@
-#  Fillin
+# <img src="apps/landing/frontend/public/logo.png" width="48" height="48" align="top" alt="Fillin Logo" /> Fillin
 
 > **Fill in your own blanks.**  
 > Create instant shortcuts for anything you type repeatedly. Privacy-first, local-first, blazing fast.

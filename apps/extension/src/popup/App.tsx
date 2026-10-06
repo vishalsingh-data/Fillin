@@ -34,9 +34,7 @@ export function App() {
     return (
       <div className="flex items-center justify-center h-full bg-white">
         <div className="flex flex-col items-center space-y-4 animate-fade-in">
-          <div className="w-10 h-10 rounded-2xl bg-black flex items-center justify-center shadow-[0_4px_16px_-4px_rgba(0,0,0,0.3)]">
-            <span className="text-white font-bold text-lg">F</span>
-          </div>
+          <img src="/icon128.png" alt="Fillin Logo" className="w-10 h-10 rounded-2xl shadow-[0_4px_16px_-4px_rgba(0,0,0,0.3)]" />
           <div className="flex space-x-1.5">
             {[0, 1, 2].map(i => (
               <span

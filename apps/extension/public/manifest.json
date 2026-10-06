@@ -6,11 +6,15 @@
   "action": {
     "default_popup": "src/popup/index.html",
     "default_icon": {
-      "128": "icon.jpg"
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
     }
   },
   "icons": {
-    "128": "icon.jpg"
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   },
   "background": {
     "service_worker": "background.js",
