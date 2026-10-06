@@ -19,7 +19,7 @@ export const InstallPage = () => {
         <div className="space-y-8">
           
           {/* Step 1 */}
-          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center">
+          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center md:items-start">
             <div className="flex-shrink-0 w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-black text-2xl">
               1
             </div>
@@ -36,7 +36,7 @@ export const InstallPage = () => {
           </div>
 
           {/* Step 2 */}
-          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center">
+          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center md:items-start">
             <div className="flex-shrink-0 w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-black text-2xl">
               2
             </div>
@@ -55,7 +55,7 @@ export const InstallPage = () => {
           </div>
 
           {/* Step 3 */}
-          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center">
+          <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center md:items-start">
             <div className="flex-shrink-0 w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-black text-2xl">
               3
             </div>
