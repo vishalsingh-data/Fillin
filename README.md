@@ -220,4 +220,4 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [d
 
 ##  License
 
-Distributed under the [MIT License](LICENSE).
+Distributed under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE).
