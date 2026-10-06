@@ -9,8 +9,15 @@ import { Privacy } from './components/Privacy';
 import { CTA } from './components/CTA';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
+import { InstallPage } from './components/InstallPage';
 
 export const App = () => {
+  const path = window.location.pathname;
+
+  if (path === '/install') {
+    return <InstallPage />;
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />

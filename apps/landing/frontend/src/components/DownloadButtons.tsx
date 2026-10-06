@@ -7,6 +7,11 @@ export const DownloadButtons = () => {
       <a 
         href="/fillin-extension.zip"
         download="fillin-extension.zip"
+        onClick={() => {
+          setTimeout(() => {
+            window.location.href = '/install';
+          }, 300);
+        }}
         rel="noopener noreferrer"
         className="flex items-center gap-2 px-6 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-colors w-full sm:w-auto justify-center"
       >
