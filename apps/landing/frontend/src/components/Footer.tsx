@@ -14,8 +14,7 @@ export const Footer = () => {
           &copy; {new Date().getFullYear()} Fillin. All rights reserved.
         </div>
         <div className="flex space-x-6 mt-4 md:mt-0">
-          <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors">GitHub</a>
-          <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors">Twitter</a>
+          <a href="https://github.com/vishalsingh-data/Fillin" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-900 transition-colors">GitHub</a>
         </div>
       </div>
     </footer>
