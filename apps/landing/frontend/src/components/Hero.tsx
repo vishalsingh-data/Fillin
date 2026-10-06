@@ -27,10 +27,17 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Playful Sticker */}
+      {/* Playful Sticker 1 */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -ml-[280px] -mt-[60px] md:-ml-[380px] md:-mt-[80px] z-10 rotate-[-15deg] hover:rotate-0 hover:scale-110 transition-all duration-300 cursor-pointer">
         <div className="bg-yellow-300 text-yellow-900 font-bold text-sm px-4 py-2 rounded-full border-2 border-yellow-900 shadow-[3px_3px_0px_0px_rgba(113,63,18,1)]">
           100% Free! ✌️
+        </div>
+      </div>
+
+      {/* Playful Sticker 2 */}
+      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ml-[220px] -mt-[50px] md:ml-[340px] md:-mt-[70px] z-10 rotate-[12deg] hover:rotate-0 hover:scale-110 transition-all duration-300 cursor-pointer">
+        <div className="bg-blue-200 text-blue-900 font-bold text-sm px-4 py-2 rounded-full border-2 border-blue-900 shadow-[3px_3px_0px_0px_rgba(30,58,138,1)] flex items-center gap-1.5">
+          Chrome Extension 🧩
         </div>
       </div>
 
@@ -40,7 +47,7 @@ export const Hero = () => {
           Fill in your <br className="hidden md:block" /> own blanks.
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
-          Create shortcuts for anything you type repeatedly. {PRODUCT_NAME} is a Chrome extension that expands your custom snippets across the web instantly.
+          Create shortcuts for anything you type repeatedly. {PRODUCT_NAME} expands your custom snippets across the web instantly.
         </p>
         
         <div className="max-w-2xl mx-auto mb-10 transform hover:scale-105 transition-transform duration-300">
