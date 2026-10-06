@@ -36,9 +36,20 @@ export class TextInputAdapter implements InputAdapter {
     return this.withTextType(() => this.element.selectionStart);
   }
 
-  replaceText(start: number, end: number, newContent: string): void {
+  replaceText(start: number, end: number, newContent: string, isHtml?: boolean): void {
+    let finalContent = newContent;
+    if (isHtml) {
+      // Replace <br> and <p> with newlines, then strip tags
+      finalContent = finalContent.replace(/<br\s*\/?>/gi, '\n');
+      finalContent = finalContent.replace(/<\/p>/gi, '\n\n');
+      const tmp = document.createElement('DIV');
+      tmp.innerHTML = finalContent;
+      finalContent = tmp.textContent || tmp.innerText || '';
+      finalContent = finalContent.trim();
+    }
+    
     const originalText = this.getText();
-    const result = replaceTrigger(originalText, { trigger: '', start, end }, newContent);
+    const result = replaceTrigger(originalText, { trigger: '', start, end }, finalContent);
     
     // Bypass React's value setter override to ensure 'input' events trigger state updates
     let NativeSetter = null;

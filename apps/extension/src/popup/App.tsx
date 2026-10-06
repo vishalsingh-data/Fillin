@@ -20,9 +20,9 @@ export function App() {
   const handleEdit = (snippet: Snippet) => { setEditingSnippet(snippet); setView('form'); };
   const handleDelete = (id: string) => setPendingDeleteId(id);
 
-  const handleSave = async (trigger: string, content: string) => {
-    if (editingSnippet) await updateSnippet(editingSnippet.id, trigger, content);
-    else await createSnippet(trigger, content);
+  const handleSave = async (trigger: string, content: string, isHtml: boolean) => {
+    if (editingSnippet) await updateSnippet(editingSnippet.id, trigger, content, isHtml);
+    else await createSnippet(trigger, content, isHtml);
   };
 
   const handleConfirmDelete = async () => {

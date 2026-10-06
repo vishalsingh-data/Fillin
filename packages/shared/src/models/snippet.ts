@@ -6,6 +6,7 @@ export const snippetSchema = z.object({
   id: z.string().min(1, "ID is required"),
   trigger: z.string().regex(TRIGGER_REGEX, "Trigger must begin with / and contain only letters, numbers, underscores, or hyphens"),
   content: z.string(),
+  isHtml: z.boolean().optional(),
   createdAt: z.number(),
   updatedAt: z.number()
 });

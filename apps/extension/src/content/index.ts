@@ -1,14 +1,14 @@
 import { detectTrigger } from '@fillin/shared';
 import { AdapterFactory } from './adapters/AdapterFactory';
 
-let snippetsCache: Record<string, string> = {};
+let snippetsCache: Record<string, { content: string; isHtml: boolean }> = {};
 let triggersCache: string[] = [];
 
-export function updateCache(snippets: { trigger: string, content: string }[]) {
+export function updateCache(snippets: { trigger: string, content: string, isHtml?: boolean }[]) {
   snippetsCache = {};
   triggersCache = [];
   for (const s of snippets) {
-    snippetsCache[s.trigger] = s.content;
+    snippetsCache[s.trigger] = { content: s.content, isHtml: !!s.isHtml };
     triggersCache.push(s.trigger);
   }
 }
@@ -36,10 +36,10 @@ export function handleKeyDown(e: KeyboardEvent) {
 
     const detection = detectTrigger(text, cursor, triggersCache);
     if (detection) {
-      const content = snippetsCache[detection.trigger];
-      if (content !== undefined) {
+      const snippet = snippetsCache[detection.trigger];
+      if (snippet !== undefined) {
         e.preventDefault();
-        adapter.replaceText(detection.start, detection.end, content);
+        adapter.replaceText(detection.start, detection.end, snippet.content, snippet.isHtml);
       }
     }
   }

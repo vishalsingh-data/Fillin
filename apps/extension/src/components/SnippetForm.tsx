@@ -4,7 +4,7 @@ import { ArrowLeft, Save, Hash } from 'lucide-react';
 
 interface Props {
   snippet?: Snippet;
-  onSave: (trigger: string, content: string) => Promise<void>;
+  onSave: (trigger: string, content: string, isHtml: boolean) => Promise<void>;
   onCancel: () => void;
   error?: string | null;
 }
@@ -12,6 +12,7 @@ interface Props {
 export function SnippetForm({ snippet, onSave, onCancel, error }: Props) {
   const [trigger, setTrigger] = useState(snippet?.trigger || '/');
   const [content, setContent] = useState(snippet?.content || '');
+  const [isHtml, setIsHtml] = useState(snippet?.isHtml || false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -24,7 +25,7 @@ export function SnippetForm({ snippet, onSave, onCancel, error }: Props) {
     setLocalError(null);
     setIsSubmitting(true);
     try {
-      await onSave(trigger, content);
+      await onSave(trigger, content, isHtml);
       onCancel();
     } catch (err) {
       setLocalError(err instanceof Error ? err.message : 'Something went wrong');
@@ -110,6 +111,20 @@ export function SnippetForm({ snippet, onSave, onCancel, error }: Props) {
               {content.length} character{content.length !== 1 ? 's' : ''}
             </p>
           )}
+          
+          {/* HTML Toggle */}
+          <div className="mt-3 flex items-center">
+            <input
+              id="htmlToggle"
+              type="checkbox"
+              checked={isHtml}
+              onChange={(e) => setIsHtml(e.target.checked)}
+              className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+            />
+            <label htmlFor="htmlToggle" className="ml-2 block text-xs text-gray-700">
+              Interpret as Rich Text (HTML)
+            </label>
+          </div>
         </div>
 
         {/* Save button */}

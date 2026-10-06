@@ -24,10 +24,10 @@ export function useSnippets(service: SnippetService) {
     loadSnippets();
   }, [loadSnippets]);
 
-  const createSnippet = async (trigger: string, content: string) => {
+  const createSnippet = async (trigger: string, content: string, isHtml: boolean = false) => {
     try {
       setError(null);
-      await service.createSnippet(trigger, content);
+      await service.createSnippet(trigger, content, isHtml);
       await loadSnippets();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create snippet');
@@ -35,10 +35,10 @@ export function useSnippets(service: SnippetService) {
     }
   };
 
-  const updateSnippet = async (id: string, trigger: string, content: string) => {
+  const updateSnippet = async (id: string, trigger: string, content: string, isHtml: boolean = false) => {
     try {
       setError(null);
-      await service.updateSnippet(id, { trigger, content });
+      await service.updateSnippet(id, { trigger, content, isHtml });
       await loadSnippets();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update snippet');

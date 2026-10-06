@@ -4,7 +4,7 @@ import { SnippetRepository } from '../storage/SnippetRepository';
 export class SnippetService {
   constructor(private repository: SnippetRepository) {}
 
-  async createSnippet(trigger: string, content: string): Promise<Snippet> {
+  async createSnippet(trigger: string, content: string, isHtml: boolean = false): Promise<Snippet> {
     const snippets = await this.repository.getAll();
     
     if (snippets.some(s => s.trigger === trigger)) {
@@ -16,6 +16,7 @@ export class SnippetService {
       id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2),
       trigger,
       content,
+      isHtml,
       createdAt: now,
       updatedAt: now,
     };
@@ -40,7 +41,7 @@ export class SnippetService {
     return snippets.find(s => s.trigger === trigger);
   }
 
-  async updateSnippet(id: string, updates: Partial<Pick<Snippet, 'trigger' | 'content'>>): Promise<Snippet> {
+  async updateSnippet(id: string, updates: Partial<Pick<Snippet, 'trigger' | 'content' | 'isHtml'>>): Promise<Snippet> {
     const snippets = await this.repository.getAll();
     const index = snippets.findIndex(s => s.id === id);
 
