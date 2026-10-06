@@ -40,7 +40,7 @@ export const Hero = () => {
           Fill in your <br className="hidden md:block" /> own blanks.
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
-          Create shortcuts for anything you type repeatedly. {PRODUCT_NAME} expands your custom snippets across the web instantly.
+          Create shortcuts for anything you type repeatedly. {PRODUCT_NAME} is a Chrome extension that expands your custom snippets across the web instantly.
         </p>
         
         <div className="max-w-2xl mx-auto mb-10 transform hover:scale-105 transition-transform duration-300">
