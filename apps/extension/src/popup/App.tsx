@@ -31,24 +31,49 @@ export function App() {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this snippet?')) {
+    if (confirm('Delete this snippet?')) {
       await deleteSnippet(id);
     }
   };
 
+  /* ── Loading state ── */
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full bg-white text-gray-400">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-8 h-8 bg-purple-200 rounded-full mb-2"></div>
-          <div className="text-sm">Loading...</div>
+      <div
+        className="flex items-center justify-center h-full"
+        style={{ background: 'linear-gradient(160deg, #0f0a1a 0%, #130d24 50%, #0d0a1f 100%)' }}
+      >
+        <div className="flex flex-col items-center space-y-3 animate-fade-in">
+          {/* Spinning logo */}
+          <div
+            className="w-10 h-10 rounded-2xl flex items-center justify-center"
+            style={{
+              background: 'linear-gradient(135deg, #7c3aed, #9333ea)',
+              boxShadow: '0 0 24px rgba(139,92,246,0.4)',
+            }}
+          >
+            <span className="text-white font-bold text-lg">F</span>
+          </div>
+          <div className="flex space-x-1">
+            {[0, 1, 2].map(i => (
+              <span
+                key={i}
+                className="w-1.5 h-1.5 rounded-full"
+                style={{
+                  background: 'rgba(139,92,246,0.7)',
+                  animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite`,
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
+  /* ── Main layout ── */
   return (
-    <div className="h-full bg-white relative flex flex-col overflow-hidden">
+    <div className="h-full relative flex flex-col overflow-hidden">
       {view === 'list' ? (
         <>
           <div className="flex-1 overflow-hidden">
@@ -60,17 +85,36 @@ export function App() {
               setSearchQuery={setSearchQuery}
             />
           </div>
-          <div className="p-5 border-t border-gray-100 bg-white">
+
+          {/* Footer CTA */}
+          <div
+            className="px-4 py-3"
+            style={{
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+              background: 'rgba(15,10,26,0.9)',
+              backdropFilter: 'blur(12px)',
+            }}
+          >
             <button
               onClick={handleNew}
-              className="w-full flex items-center justify-center space-x-2 bg-gray-900 hover:bg-black text-white py-2.5 rounded-xl font-medium text-sm transition-all shadow-sm focus:outline-none focus:ring-4 focus:ring-gray-200"
+              className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-xl font-semibold text-sm text-white focus:outline-none glow-btn"
             >
               <Plus className="w-4 h-4" />
               <span>Create Snippet</span>
             </button>
           </div>
+
+          {/* Error toast */}
           {error && view === 'list' && (
-            <div className="absolute top-4 left-4 right-4 bg-red-50 text-red-600 border border-red-200 text-xs px-3 py-2 rounded-lg text-center shadow-sm font-medium animate-in slide-in-from-top-2">
+            <div
+              className="absolute top-3 left-3 right-3 px-3 py-2 rounded-xl text-xs font-medium text-center animate-fade-in"
+              style={{
+                background: 'rgba(239,68,68,0.15)',
+                border: '1px solid rgba(239,68,68,0.3)',
+                color: '#f87171',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
               {error}
             </div>
           )}
@@ -83,6 +127,13 @@ export function App() {
           error={error}
         />
       )}
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 0.3; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }
