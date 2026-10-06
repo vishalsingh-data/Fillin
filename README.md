@@ -200,6 +200,18 @@ Developers contributing to Fillin must adhere to the rules defined in [`AGENTS.m
 
 ---
 
+##  Frequently Asked Questions (FAQ)
+
+**Where does Fillin work?**  
+Fillin natively supports text boxes, forms, and rich-text editors (like Gmail, Notion, and Jira) within webpages. For maximum privacy and zero friction, it intentionally stays out of your browser's native URL bar and settings pages.
+
+**Is my data secure?**  
+Absolutely. Fillin has zero remote analytics and no backend database. Your snippets are stored 100% locally in your browser, and keystrokes are processed entirely within the tab's secure sandbox.
+
+**Is Fillin free?**  
+Yes, Fillin is completely free and open-source. There are no premium tiers, no locked features, and no tracking.
+
+---
 ##  Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/development/README.md](docs/development/README.md) before submitting pull requests.

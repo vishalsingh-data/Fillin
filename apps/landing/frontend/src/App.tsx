@@ -6,6 +6,7 @@ import { ProductDemo } from './components/ProductDemo';
 import { Features } from './components/Features';
 import { Privacy } from './components/Privacy';
 import { CTA } from './components/CTA';
+import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 
 export const App = () => {
@@ -19,6 +20,7 @@ export const App = () => {
         <Features />
         <Privacy />
         <CTA />
+        <FAQ />
       </main>
       <Footer />
     </div>
