@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal, Sparkles, Command } from 'lucide-react';
 
 export const InteractivePlayground = () => {
-  const [text, setText] = useState('Hey team,\n\nJust wanted to share my new contact info. You can reach me at em1');
+  const [text, setText] = useState('Hey team,\n\nJust wanted to share my new contact info. You can reach me at /em1');
   const [showTooltip, setShowTooltip] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -18,8 +18,8 @@ export const InteractivePlayground = () => {
       const words = textBeforeCursor.split(/\s/);
       const lastWord = words[words.length - 1];
 
-      if (lastWord === 'em1') {
-        const replacement = 'alex.developer@example.com';
+      if (lastWord === '/em1') {
+        const replacement = 'vishal@example.com';
         const newTextBeforeCursor = textBeforeCursor.substring(0, textBeforeCursor.length - lastWord.length) + replacement;
         setText(newTextBeforeCursor + textAfterCursor);
         setIsExpanded(true);
@@ -78,7 +78,7 @@ export const InteractivePlayground = () => {
               {showTooltip && (
                 <div className="absolute top-16 right-10 bg-purple-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-lg animate-bounce flex items-center space-x-2 z-20 pointer-events-none">
                   <Command className="w-4 h-4" />
-                  <span>Put your cursor after 'em1' and hit Ctrl+Space!</span>
+                  <span>Put your cursor after '/em1' and hit Ctrl+Space!</span>
                   {/* Tooltip caret */}
                   <div className="absolute -bottom-2 right-8 w-4 h-4 bg-purple-600 transform rotate-45"></div>
                 </div>
@@ -96,7 +96,7 @@ export const InteractivePlayground = () => {
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
-                  if (e.target.value.endsWith('em1')) {
+                  if (e.target.value.endsWith('/em1')) {
                     setShowTooltip(true);
                   } else {
                     setShowTooltip(false);
@@ -115,7 +115,7 @@ export const InteractivePlayground = () => {
                 <span>React</span>
               </div>
               <div>
-                Shortcut mapping: <span className="text-purple-400 font-semibold">em1</span> → <span className="text-gray-300">alex.developer@example.com</span>
+                Shortcut mapping: <span className="text-purple-400 font-semibold">/em1</span> → <span className="text-gray-300">vishal@example.com</span>
               </div>
             </div>
           </div>
