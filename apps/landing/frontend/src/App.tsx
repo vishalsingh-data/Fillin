@@ -1,8 +1,9 @@
 import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { SocialProof } from './components/SocialProof';
 import { HowItWorks } from './components/HowItWorks';
-import { ProductDemo } from './components/ProductDemo';
+import { InteractivePlayground } from './components/InteractivePlayground';
 import { Features } from './components/Features';
 import { Privacy } from './components/Privacy';
 import { CTA } from './components/CTA';
@@ -15,8 +16,9 @@ export const App = () => {
       <Navbar />
       <main>
         <Hero />
+        <SocialProof />
+        <InteractivePlayground />
         <HowItWorks />
-        <ProductDemo />
         <Features />
         <Privacy />
         <CTA />
