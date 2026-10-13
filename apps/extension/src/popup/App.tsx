@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Snippet } from '@fillin/shared';
 import { useSnippets } from '../hooks/useSnippets';
 import { useStats } from '../hooks/useStats';
+import { useBlacklist } from '../hooks/useBlacklist';
 import { snippetService } from '../services';
 import { SnippetList } from '../components/SnippetList';
 import { SnippetForm } from '../components/SnippetForm';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { BlacklistModal } from '../components/BlacklistModal';
 import { Plus, Zap } from 'lucide-react';
 
 export function App() {
@@ -21,11 +23,20 @@ export function App() {
   } = useSnippets(snippetService);
 
   const { stats, formattedTimeSaved } = useStats();
+  const {
+    blacklistedDomains,
+    currentDomain,
+    isCurrentDomainBlacklisted,
+    toggleCurrentDomain,
+    addDomain,
+    removeDomain,
+  } = useBlacklist();
 
   const [view, setView] = useState<'list' | 'form'>('list');
   const [editingSnippet, setEditingSnippet] = useState<Snippet | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const [isBlacklistModalOpen, setIsBlacklistModalOpen] = useState(false);
 
   const pendingDeleteSnippet = snippets.find((s) => s.id === pendingDeleteId);
 
@@ -99,6 +110,10 @@ export function App() {
               setSearchQuery={setSearchQuery}
               onLoadStarterPack={loadStarterPack}
               onImport={importSnippets}
+              onOpenBlacklistModal={() => setIsBlacklistModalOpen(true)}
+              currentDomain={currentDomain}
+              isCurrentDomainBlacklisted={isCurrentDomainBlacklisted}
+              onToggleCurrentDomain={toggleCurrentDomain}
             />
           </div>
 
@@ -139,10 +154,24 @@ export function App() {
               onCancel={() => setPendingDeleteId(null)}
             />
           )}
+
+          {/* Blacklist / Site pause management modal */}
+          {isBlacklistModalOpen && (
+            <BlacklistModal
+              currentDomain={currentDomain}
+              isCurrentDomainBlacklisted={isCurrentDomainBlacklisted}
+              blacklistedDomains={blacklistedDomains}
+              onToggleCurrentDomain={toggleCurrentDomain}
+              onAddDomain={addDomain}
+              onRemoveDomain={removeDomain}
+              onClose={() => setIsBlacklistModalOpen(false)}
+            />
+          )}
         </>
       ) : (
         <SnippetForm
           snippet={editingSnippet}
+          existingSnippets={snippets}
           onSave={handleSave}
           onCancel={() => setView('list')}
           error={error}

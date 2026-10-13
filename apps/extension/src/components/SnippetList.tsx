@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Snippet } from '@fillin/shared';
-import { Search, Edit2, Trash2, Zap, Download, Upload, Sparkles } from 'lucide-react';
+import { Search, Edit2, Trash2, Zap, Download, Upload, Sparkles, Shield, ShieldAlert } from 'lucide-react';
 
 interface Props {
   snippets: Snippet[];
@@ -10,6 +10,10 @@ interface Props {
   setSearchQuery: (q: string) => void;
   onLoadStarterPack?: () => Promise<void>;
   onImport?: (data: unknown[]) => Promise<{ imported: number; updated: number; skipped: number }>;
+  onOpenBlacklistModal?: () => void;
+  currentDomain?: string | null;
+  isCurrentDomainBlacklisted?: boolean;
+  onToggleCurrentDomain?: () => void;
 }
 
 export function SnippetList({
@@ -20,6 +24,10 @@ export function SnippetList({
   setSearchQuery,
   onLoadStarterPack,
   onImport,
+  onOpenBlacklistModal,
+  currentDomain,
+  isCurrentDomainBlacklisted,
+  onToggleCurrentDomain,
 }: Props) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -144,6 +152,30 @@ export function SnippetList({
             >
               <Download className="w-3.5 h-3.5" />
             </button>
+
+            {/* Blacklist / Site Shield Button */}
+            {onOpenBlacklistModal && (
+              <button
+                onClick={onOpenBlacklistModal}
+                className={`p-1.5 rounded-lg transition-all focus:outline-none ${
+                  isCurrentDomainBlacklisted
+                    ? 'text-amber-600 bg-amber-50 hover:bg-amber-100 ring-1 ring-amber-200'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                }`}
+                title={
+                  isCurrentDomainBlacklisted
+                    ? `Fillin is PAUSED on ${currentDomain || 'this site'}. Click to manage.`
+                    : 'Pause / Blacklist settings'
+                }
+                aria-label="Manage site blacklist and pause settings"
+              >
+                {isCurrentDomainBlacklisted ? (
+                  <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
+                ) : (
+                  <Shield className="w-3.5 h-3.5" />
+                )}
+              </button>
+            )}
           </div>
         </div>
 
@@ -160,6 +192,26 @@ export function SnippetList({
             autoFocus
           />
         </div>
+
+        {/* Paused on current site banner */}
+        {isCurrentDomainBlacklisted && currentDomain && (
+          <div className="mt-2.5 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between animate-fade-in">
+            <div className="flex items-center space-x-2 min-w-0">
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+              <p className="truncate text-xs text-amber-900">
+                Paused on <span className="font-semibold">{currentDomain}</span>
+              </p>
+            </div>
+            {onToggleCurrentDomain && (
+              <button
+                onClick={onToggleCurrentDomain}
+                className="text-[11px] font-semibold text-amber-700 hover:text-amber-900 underline ml-2 flex-shrink-0"
+              >
+                Resume
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Tag Filter Pills */}
         {allTags.length > 0 && (

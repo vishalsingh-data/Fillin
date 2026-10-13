@@ -7,6 +7,18 @@ import { commandPalette } from './CommandPalette';
 let snippetsCache: Record<string, { content: string; isHtml: boolean }> = {};
 let triggersCache: string[] = [];
 let fullSnippetsCache: Snippet[] = [];
+let blacklistedDomainsCache: string[] = [];
+
+export function updateBlacklistCache(domains: string[]) {
+  blacklistedDomainsCache = (domains || []).map((d) => d.toLowerCase().replace(/^www\./, ''));
+}
+
+export function isCurrentSiteBlacklisted(): boolean {
+  if (typeof window === 'undefined') return false;
+  const host = window.location.hostname.toLowerCase().replace(/^www\./, '');
+  if (!host) return false;
+  return blacklistedDomainsCache.some((d) => host === d || host.endsWith('.' + d));
+}
 
 export function updateCache(
   snippets: (Snippet | { trigger: string; content: string; isHtml?: boolean; tags?: string[] })[]
@@ -56,6 +68,8 @@ export function getTargetElement(e?: KeyboardEvent): Element | null {
 }
 
 export function handleKeyDown(e: KeyboardEvent) {
+  if (isCurrentSiteBlacklisted()) return;
+
   const targetEl = getTargetElement(e);
 
   // Shortcut 1: In-Page Command Palette (Ctrl+Shift+K or Cmd+Shift+K or Cmd+/)
@@ -141,22 +155,28 @@ export function initGoogleDocsObserver() {
 // Initialize only in actual browser environment
 if (typeof document !== 'undefined') {
   if (typeof chrome !== 'undefined' && chrome.storage) {
-    chrome.storage.local.get('fillin_snippets', (result) => {
+    chrome.storage.local.get(['fillin_snippets', 'fillin_blacklist'], (result) => {
       const snippets = result['fillin_snippets'] || [];
       updateCache(snippets);
+      updateBlacklistCache(result['fillin_blacklist'] || []);
     });
 
     chrome.storage.onChanged.addListener((changes, area) => {
-      if (area === 'local' && changes['fillin_snippets']) {
-        updateCache(changes['fillin_snippets'].newValue || []);
+      if (area === 'local') {
+        if (changes['fillin_snippets']) {
+          updateCache(changes['fillin_snippets'].newValue || []);
+        }
+        if (changes['fillin_blacklist']) {
+          updateBlacklistCache(changes['fillin_blacklist'].newValue || []);
+        }
       }
     });
   } else {
     try {
       const data = localStorage.getItem('fillin_snippets');
-      if (data) {
-        updateCache(JSON.parse(data));
-      }
+      if (data) updateCache(JSON.parse(data));
+      const bData = localStorage.getItem('fillin_blacklist');
+      if (bData) updateBlacklistCache(JSON.parse(bData));
     } catch (e) {
       console.error(e);
     }

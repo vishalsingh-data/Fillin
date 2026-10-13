@@ -41,6 +41,8 @@ Whether you're typing your email (`/email`), a canned customer support response 
   - **Web Components & Shadow DOM**: Pierces Shadow DOM boundaries (e.g., YouTube search bar) and dispatches composed input/change events across shadow boundaries.
   - **Google Docs Canvas Adapter**: Dedicated adapter with an ephemeral, privacy-first keystroke buffer and clipboard bridge tailored for Google Docs' custom HTML5 canvas rendering engine.
   - **Restricted Inputs**: Automatically handles cursor position calculation for HTML5 input types (`search`, `url`, `tel`).
+-  **Site Blacklist & 1-Click Pause Mode**: Instantly disable Fillin on sensitive websites (banking portals, internal tools, code sandboxes) with a single click in the popup, or manage custom blacklisted domains with automatic subdomain matching (`secure.chase.com` matches `chase.com`).
+-  **Snippet Duplicate Warning & Conflict Resolution**: Real-time visual conflict detection in the snippet editor that prevents exact duplicate triggers and warns on prefix overlaps (e.g., `/e` vs `/email`), providing clean clickable suggestions (`/email2`, `/myemail`).
 -  **Zero Data Collection**: Operates strictly on `chrome.storage.local`. No typing data or keystrokes ever leave your browser.
 -  **Minimal Popup UI**: Sleek, modern monochromatic extension popup to create, edit, search, and manage shortcuts effortlessly.
 -  **Decoupled Monorepo Architecture**: Clean separation between the core shared engine, the extension, and the marketing landing app.
@@ -117,6 +119,16 @@ When `Ctrl + Space` is pressed, Fillin extracts the text preceding the cursor an
 
 ### 3. Local Storage Persistence ([`apps/extension/src/storage`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/apps/extension/src/storage))
 Uses a repository pattern ([`SnippetRepository`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/apps/extension/src/storage/SnippetRepository.ts)) with implementations for Chrome Storage API (`chrome.storage.local`), Web `localStorage`, and an `InMemoryRepository` for unit tests.
+
+### 4. Site Blacklist & Privacy Shield ([`apps/extension/src/services/BlacklistService.ts`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/apps/extension/src/services/BlacklistService.ts))
+Provides instant 1-click site pausing and domain blacklisting:
+- **Subdomain Matching**: Automatically protects subdomains (e.g. blocking `chase.com` protects `secure.chase.com` and `login.chase.com`).
+- **Zero Ingestion**: When paused, the content script stays completely silent, bypassing all keyboard capture and shortcut handling.
+
+### 5. Conflict Resolution & Duplicate Guard ([`apps/extension/src/components/SnippetForm.tsx`](file:///Users/samprati/Desktop/Projects/Fillin/Fillin/apps/extension/src/components/SnippetForm.tsx))
+Real-time trigger conflict evaluation as you type:
+- **Exact Duplicates**: Blocks creation and suggests numbered/prefixed alternatives (e.g., `/email2`, `/myemail`).
+- **Prefix Overlaps**: Flags trigger ambiguities (e.g., `/e` vs `/email`) to ensure longest-match expansion predictability.
 
 ---
 
