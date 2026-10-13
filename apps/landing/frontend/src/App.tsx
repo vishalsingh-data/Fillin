@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
 import { HowItWorks } from './components/HowItWorks';
 import { InteractivePlayground } from './components/InteractivePlayground';
+import { CommandPaletteShowcase } from './components/CommandPaletteShowcase';
 import { Features } from './components/Features';
 import { Privacy } from './components/Privacy';
 import { CTA } from './components/CTA';
@@ -25,6 +26,7 @@ export const App = () => {
         <Hero />
         <SocialProof />
         <InteractivePlayground />
+        <CommandPaletteShowcase />
         <HowItWorks />
         <Features />
         <Privacy />

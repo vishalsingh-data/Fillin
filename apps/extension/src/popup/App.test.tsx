@@ -33,7 +33,7 @@ describe('Snippet Management UI', () => {
     render(<App />);
     
     // Initial loading
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByAltText('Fillin Logo')).toBeInTheDocument();
     
     // Empty state
     await waitFor(() => {
@@ -81,13 +81,13 @@ describe('Snippet Management UI', () => {
     
     expect(screen.getByText('New Snippet')).toBeInTheDocument();
 
-    const triggerInput = screen.getAllByRole('textbox')[0]; // First textbox is trigger
-    const contentInput = screen.getAllByRole('textbox')[1]; // Second is content
+    const triggerInput = screen.getByPlaceholderText('email, name, sig...');
+    const contentInput = screen.getByPlaceholderText('The text that will be inserted...');
     
     // Test validation - duplicate
     fireEvent.change(triggerInput, { target: { value: '/email' } });
     fireEvent.change(contentInput, { target: { value: 'duplicate' } });
-    fireEvent.click(screen.getByText('Save Snippet'));
+    fireEvent.submit(screen.getByText('Save Snippet').closest('form')!);
 
     await waitFor(() => {
       expect(screen.getByText(/already exists/i)).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe('Snippet Management UI', () => {
 
     // Test successful creation
     fireEvent.change(triggerInput, { target: { value: '/linkedin' } });
-    fireEvent.click(screen.getByText('Save Snippet'));
+    fireEvent.submit(screen.getByText('Save Snippet').closest('form')!);
 
     await waitFor(() => {
       expect(screen.getByText('/linkedin')).toBeInTheDocument(); // Back to list view
@@ -116,9 +116,9 @@ describe('Snippet Management UI', () => {
 
     expect(screen.getByText('Edit Snippet')).toBeInTheDocument();
     
-    const contentInput = screen.getAllByRole('textbox')[1];
+    const contentInput = screen.getByPlaceholderText('The text that will be inserted...');
     fireEvent.change(contentInput, { target: { value: 'updated@example.com' } });
-    fireEvent.click(screen.getByText('Save Snippet'));
+    fireEvent.submit(screen.getByText('Update Snippet').closest('form')!);
 
     await waitFor(() => {
       expect(screen.getByText('updated@example.com')).toBeInTheDocument();
@@ -127,7 +127,6 @@ describe('Snippet Management UI', () => {
 
   it('deletes a snippet', async () => {
     await setupSnippets();
-    window.confirm = vi.fn(() => true); // Mock confirm dialog
     
     render(<App />);
 
@@ -137,6 +136,13 @@ describe('Snippet Management UI', () => {
 
     const deleteButtons = screen.getAllByTitle('Delete snippet');
     fireEvent.click(deleteButtons[0]);
+
+    await waitFor(() => {
+      expect(screen.getByText('Delete snippet?')).toBeInTheDocument();
+    });
+
+    const confirmBtn = screen.getByRole('button', { name: 'Delete' });
+    fireEvent.click(confirmBtn);
 
     await waitFor(() => {
       expect(screen.queryByText('/email')).not.toBeInTheDocument();

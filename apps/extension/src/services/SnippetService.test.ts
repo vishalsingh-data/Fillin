@@ -115,4 +115,55 @@ describe('SnippetService', () => {
       await expect(service.createSnippet('/test', 'A')).rejects.toThrow('Simulated storage read failure'); // Fails on initial read check
     });
   });
+
+  describe('tags support', () => {
+    it('creates snippets with tags and updates tags', async () => {
+      const created = await service.createSnippet('/tagged', 'content', false, ['work', 'email']);
+      expect(created.tags).toEqual(['work', 'email']);
+
+      const updated = await service.updateSnippet(created.id, { tags: ['personal'] });
+      expect(updated.tags).toEqual(['personal']);
+    });
+  });
+
+  describe('starter pack', () => {
+    it('loads starter snippets into an empty repository', async () => {
+      const snippets = await service.loadStarterPack();
+      expect(snippets.length).toBeGreaterThan(0);
+      expect(snippets.some(s => s.trigger === '/shrug')).toBe(true);
+    });
+
+    it('does not duplicate existing triggers when loading starter pack', async () => {
+      await service.createSnippet('/shrug', 'custom shrug');
+      const snippets = await service.loadStarterPack();
+      const shrug = snippets.find(s => s.trigger === '/shrug');
+      expect(shrug?.content).toBe('custom shrug');
+    });
+  });
+
+  describe('import/export', () => {
+    it('imports valid snippets and skips invalid ones', async () => {
+      const data = [
+        {
+          id: '1',
+          trigger: '/imported',
+          content: 'valid content',
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        {
+          id: '2',
+          trigger: 'invalid-no-slash',
+          content: 'bad'
+        }
+      ];
+
+      const res = await service.importSnippets(data);
+      expect(res.imported).toBe(1);
+      expect(res.skipped).toBe(1);
+
+      const all = await service.getSnippets();
+      expect(all.some(s => s.trigger === '/imported')).toBe(true);
+    });
+  });
 });

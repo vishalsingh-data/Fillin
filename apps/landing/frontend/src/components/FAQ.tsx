@@ -11,6 +11,10 @@ export const FAQ = () => {
       answer: "Absolutely. Fillin has zero remote analytics and no backend database. Your snippets are stored 100% locally in your browser, and keystrokes are processed entirely within the tab's secure sandbox."
     },
     {
+      question: "What if I forget my snippet trigger?",
+      answer: "Just hit ⌘ + Shift + K (or Ctrl + Shift + K on Windows). A Spotlight-style command palette will float over your page, allowing you to fuzzy search all your snippets by trigger, content, or #tag and insert with Enter."
+    },
+    {
       question: "Is Fillin free?",
       answer: "Yes, Fillin is completely free and open-source. There are no premium tiers, no locked features, and no tracking."
     }

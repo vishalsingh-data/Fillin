@@ -27,6 +27,14 @@ export const Hero = () => {
         </div>
       </div>
 
+      {/* Floating Badge: In-Page Palette */}
+      <div className="hidden lg:block absolute bottom-24 right-20 animate-[float_7.5s_ease-in-out_infinite_reverse] opacity-85 pointer-events-none" style={{ '--tw-rotate': '-4deg' } as any}>
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-3.5 -rotate-3 hover:rotate-0 transition-transform duration-300 flex items-center space-x-2">
+          <span className="text-xs font-mono font-bold bg-gray-900 text-white px-2 py-1 rounded-md shadow-sm">⌘ Shift K</span>
+          <span className="text-xs font-bold text-gray-800">Spotlight</span>
+        </div>
+      </div>
+
       {/* Playful Sticker 1 */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -ml-[280px] -mt-[60px] md:-ml-[380px] md:-mt-[80px] z-10 rotate-[-15deg] hover:rotate-0 hover:scale-110 transition-all duration-300 cursor-pointer">
         <div className="bg-yellow-300 text-yellow-900 font-bold text-sm px-4 py-2 rounded-full border-2 border-yellow-900 shadow-[3px_3px_0px_0px_rgba(113,63,18,1)]">

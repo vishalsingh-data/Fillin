@@ -30,13 +30,17 @@ Whether you're typing your email (`/email`), a canned customer support response 
 ##  Key Features
 
 -  **Instant Snippet Expansion**: Type your snippet trigger (e.g. `/email`) and hit `Ctrl + Space` to expand it inline.
+-  **In-Page Command Palette**: Press `Ctrl + Shift + K` (or `Cmd + Shift + K` / `Cmd + /`) to summon a Raycast-style floating palette over any webpage, search across your entire snippet library, and insert with `Enter`.
+-  **Local Gamification (Keystrokes & Time Saved)**: Real-time counter displayed in the popup tracking total keystrokes and minutes saved—calculated and stored 100% locally.
+-  **Tags & Category Organization**: Categorize snippets with `#tags` (e.g., `#email`, `#work`, `#dev`) and filter your library with 1 click.
+-  **1-Click JSON Portability & Starter Pack**: Instant local export and import for hassle-free backup, plus a pre-bundled starter pack with popular productivity shortcuts.
 -  **Universal DOM Adapters**:
   - **Standard Inputs & Textareas**: Full support for `<input>` and `<textarea>` elements.
   - **React-Controlled Fields**: Bypasses React's internal value setter override (`Object.getOwnPropertyDescriptor`) so synthetic events bubble naturally.
   - **Rich-Text & ContentEditable Editors**: Native support for complex wrappers like Notion, Gmail, and Google Docs (`isContentEditable`).
   - **Restricted Inputs**: Automatically handles cursor position calculation for HTML5 input types (`search`, `url`, `tel`).
 -  **Zero Data Collection**: Operates strictly on `chrome.storage.local`. No typing data or keystrokes ever leave your browser.
--  **Minimal Popup UI**: Sleek, modern extension popup to create, edit, search, and manage shortcuts effortlessly.
+-  **Minimal Popup UI**: Sleek, modern monochromatic extension popup to create, edit, search, and manage shortcuts effortlessly.
 -  **Decoupled Monorepo Architecture**: Clean separation between the core shared engine, the extension, and the marketing landing app.
 
 ---

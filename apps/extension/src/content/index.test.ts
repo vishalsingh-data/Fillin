@@ -130,4 +130,21 @@ describe('Content Script Replacer', () => {
       expect(getDeepActiveElement()).toBe(shadowInput);
     });
   });
+
+  describe('Command Palette Shortcut', () => {
+    it('opens command palette on Ctrl+Shift+K', () => {
+      const event = new KeyboardEvent('keydown', {
+        key: 'k',
+        code: 'KeyK',
+        ctrlKey: true,
+        shiftKey: true,
+        cancelable: true,
+      });
+      handleKeyDown(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      const host = document.getElementById('fillin-command-palette-host');
+      expect(host).not.toBeNull();
+    });
+  });
 });

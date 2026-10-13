@@ -7,6 +7,7 @@ export const snippetSchema = z.object({
   trigger: z.string().regex(TRIGGER_REGEX, "Trigger must begin with / and contain only letters, numbers, underscores, or hyphens"),
   content: z.string(),
   isHtml: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
   createdAt: z.number(),
   updatedAt: z.number()
 });

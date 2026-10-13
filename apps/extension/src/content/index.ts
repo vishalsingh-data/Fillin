@@ -1,16 +1,33 @@
-import { detectTrigger } from '@fillin/shared';
+import { detectTrigger, Snippet } from '@fillin/shared';
 import { AdapterFactory } from './adapters/AdapterFactory';
+import { statsService } from '../services/StatsService';
+import { commandPalette } from './CommandPalette';
 
 let snippetsCache: Record<string, { content: string; isHtml: boolean }> = {};
 let triggersCache: string[] = [];
+let fullSnippetsCache: Snippet[] = [];
 
-export function updateCache(snippets: { trigger: string, content: string, isHtml?: boolean }[]) {
+export function updateCache(
+  snippets: (Snippet | { trigger: string; content: string; isHtml?: boolean; tags?: string[] })[]
+) {
   snippetsCache = {};
   triggersCache = [];
-  for (const s of snippets) {
+  fullSnippetsCache = (snippets || []).map((s, idx) => ({
+    id: (s as Snippet).id || String(idx),
+    trigger: s.trigger,
+    content: s.content,
+    isHtml: !!s.isHtml,
+    tags: (s as Snippet).tags,
+    createdAt: (s as Snippet).createdAt || Date.now(),
+    updatedAt: (s as Snippet).updatedAt || Date.now(),
+  }));
+
+  for (const s of fullSnippetsCache) {
     snippetsCache[s.trigger] = { content: s.content, isHtml: !!s.isHtml };
     triggersCache.push(s.trigger);
   }
+
+  commandPalette.updateSnippets(fullSnippetsCache);
 }
 
 export function getDeepActiveElement(root: Document | ShadowRoot = document): Element | null {
@@ -23,11 +40,24 @@ export function getDeepActiveElement(root: Document | ShadowRoot = document): El
 }
 
 export function handleKeyDown(e: KeyboardEvent) {
+  // Shortcut 1: In-Page Command Palette (Ctrl+Shift+K or Cmd+Shift+K or Cmd+/)
+  const isPaletteShortcut =
+    ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key.toLowerCase() === 'k' || e.code === 'KeyK')) ||
+    ((e.metaKey || e.ctrlKey) && e.key === '/' && !e.shiftKey && !e.altKey);
+
+  if (isPaletteShortcut) {
+    e.preventDefault();
+    e.stopPropagation();
+    commandPalette.open();
+    return;
+  }
+
+  // Shortcut 2: Trigger expansion (Ctrl + Space)
   if (!(e.ctrlKey && e.code === 'Space')) return;
 
   const activeEl = getDeepActiveElement();
   const adapter = AdapterFactory.getAdapter(activeEl);
-  
+
   if (adapter) {
     const text = adapter.getText();
     const cursor = adapter.getCursorPosition();
@@ -40,6 +70,7 @@ export function handleKeyDown(e: KeyboardEvent) {
       if (snippet !== undefined) {
         e.preventDefault();
         adapter.replaceText(detection.start, detection.end, snippet.content, snippet.isHtml);
+        statsService.recordExpansion(detection.trigger.length, snippet.content.length);
       }
     }
   }

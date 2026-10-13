@@ -51,10 +51,13 @@ describe('Snippet Schema Validation', () => {
       expect(result.success).toBe(false);
     });
 
-    it('should allow empty content', () => {
-      const data = { ...getValidSnippet(), content: '' };
+    it('should allow optional tags', () => {
+      const data = { ...getValidSnippet(), tags: ['email', 'work'] };
       const result = snippetSchema.safeParse(data);
       expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.tags).toEqual(['email', 'work']);
+      }
     });
   });
 });

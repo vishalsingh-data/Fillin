@@ -24,10 +24,15 @@ export function useSnippets(service: SnippetService) {
     loadSnippets();
   }, [loadSnippets]);
 
-  const createSnippet = async (trigger: string, content: string, isHtml: boolean = false) => {
+  const createSnippet = async (
+    trigger: string,
+    content: string,
+    isHtml: boolean = false,
+    tags?: string[]
+  ) => {
     try {
       setError(null);
-      await service.createSnippet(trigger, content, isHtml);
+      await service.createSnippet(trigger, content, isHtml, tags);
       await loadSnippets();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create snippet');
@@ -35,10 +40,16 @@ export function useSnippets(service: SnippetService) {
     }
   };
 
-  const updateSnippet = async (id: string, trigger: string, content: string, isHtml: boolean = false) => {
+  const updateSnippet = async (
+    id: string,
+    trigger: string,
+    content: string,
+    isHtml: boolean = false,
+    tags?: string[]
+  ) => {
     try {
       setError(null);
-      await service.updateSnippet(id, { trigger, content, isHtml });
+      await service.updateSnippet(id, { trigger, content, isHtml, tags });
       await loadSnippets();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update snippet');
@@ -57,5 +68,38 @@ export function useSnippets(service: SnippetService) {
     }
   };
 
-  return { snippets, loading, error, createSnippet, updateSnippet, deleteSnippet, reload: loadSnippets };
+  const loadStarterPack = async () => {
+    try {
+      setError(null);
+      await service.loadStarterPack();
+      await loadSnippets();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load starter pack');
+      throw err;
+    }
+  };
+
+  const importSnippets = async (incoming: unknown[]) => {
+    try {
+      setError(null);
+      const res = await service.importSnippets(incoming);
+      await loadSnippets();
+      return res;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to import snippets');
+      throw err;
+    }
+  };
+
+  return {
+    snippets,
+    loading,
+    error,
+    createSnippet,
+    updateSnippet,
+    deleteSnippet,
+    loadStarterPack,
+    importSnippets,
+    reload: loadSnippets,
+  };
 }
