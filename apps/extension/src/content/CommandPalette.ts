@@ -23,10 +23,10 @@ export class CommandPalette {
     return this.host !== null;
   }
 
-  public open() {
+  public open(targetEl?: Element | null) {
     if (this.isOpen()) return;
 
-    this.targetElement = getDeepActiveElement();
+    this.targetElement = targetEl || getDeepActiveElement();
 
     // Preserve cursor position or text range
     if (this.targetElement instanceof HTMLInputElement || this.targetElement instanceof HTMLTextAreaElement) {

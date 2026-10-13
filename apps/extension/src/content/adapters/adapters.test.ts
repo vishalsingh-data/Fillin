@@ -37,6 +37,28 @@ describe('Input Adapters', () => {
       expect(input.value).toBe('hello replaced world');
       expect(input.selectionStart).toBe(14); // 6 + 8
     });
+
+    it('dispatches composed input and change events to cross shadow DOM boundaries', () => {
+      let inputEventReceived: Event | null = null;
+      let changeEventReceived: Event | null = null;
+
+      input.addEventListener('input', (e) => {
+        inputEventReceived = e;
+      });
+      input.addEventListener('change', (e) => {
+        changeEventReceived = e;
+      });
+
+      adapter.replaceText(0, 0, 'new test');
+
+      expect(inputEventReceived).not.toBeNull();
+      expect((inputEventReceived as unknown as Event).bubbles).toBe(true);
+      expect((inputEventReceived as unknown as Event).composed).toBe(true);
+
+      expect(changeEventReceived).not.toBeNull();
+      expect((changeEventReceived as unknown as Event).bubbles).toBe(true);
+      expect((changeEventReceived as unknown as Event).composed).toBe(true);
+    });
   });
 
   describe('ContentEditableAdapter', () => {

@@ -72,6 +72,7 @@ export class TextInputAdapter implements InputAdapter {
       this.element.selectionEnd = result.cursorPosition;
     });
     
-    this.element.dispatchEvent(new Event('input', { bubbles: true }));
+    this.element.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    this.element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 }

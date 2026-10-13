@@ -33,13 +33,30 @@ export function updateCache(
 export function getDeepActiveElement(root: Document | ShadowRoot = document): Element | null {
   const activeEl = root.activeElement;
   if (!activeEl) return null;
-  if (activeEl.shadowRoot) {
+  if (activeEl.shadowRoot && activeEl.shadowRoot.activeElement) {
     return getDeepActiveElement(activeEl.shadowRoot);
   }
   return activeEl;
 }
 
+export function getTargetElement(e?: KeyboardEvent): Element | null {
+  if (e && e.composedPath && typeof e.composedPath === 'function') {
+    const path = e.composedPath();
+    if (path.length > 0 && path[0] instanceof Element) {
+      return path[0];
+    }
+  }
+  const deep = getDeepActiveElement();
+  if (deep) return deep;
+  if (e && e.target instanceof Element) {
+    return e.target;
+  }
+  return null;
+}
+
 export function handleKeyDown(e: KeyboardEvent) {
+  const targetEl = getTargetElement(e);
+
   // Shortcut 1: In-Page Command Palette (Ctrl+Shift+K or Cmd+Shift+K or Cmd+/)
   const isPaletteShortcut =
     ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key.toLowerCase() === 'k' || e.code === 'KeyK')) ||
@@ -48,15 +65,14 @@ export function handleKeyDown(e: KeyboardEvent) {
   if (isPaletteShortcut) {
     e.preventDefault();
     e.stopPropagation();
-    commandPalette.open();
+    commandPalette.open(targetEl);
     return;
   }
 
   // Shortcut 2: Trigger expansion (Ctrl + Space)
   if (!(e.ctrlKey && e.code === 'Space')) return;
 
-  const activeEl = getDeepActiveElement();
-  const adapter = AdapterFactory.getAdapter(activeEl);
+  const adapter = AdapterFactory.getAdapter(targetEl);
 
   if (adapter) {
     const text = adapter.getText();
@@ -69,6 +85,7 @@ export function handleKeyDown(e: KeyboardEvent) {
       const snippet = snippetsCache[detection.trigger];
       if (snippet !== undefined) {
         e.preventDefault();
+        e.stopPropagation();
         adapter.replaceText(detection.start, detection.end, snippet.content, snippet.isHtml);
         statsService.recordExpansion(detection.trigger.length, snippet.content.length);
       }
@@ -100,5 +117,5 @@ if (typeof document !== 'undefined') {
     }
   }
 
-  document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('keydown', handleKeyDown, true);
 }

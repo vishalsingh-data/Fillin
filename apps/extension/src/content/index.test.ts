@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { handleKeyDown, updateCache, getDeepActiveElement } from './index';
+import { handleKeyDown, updateCache, getDeepActiveElement, getTargetElement } from './index';
 
 describe('Content Script Replacer', () => {
   let input: HTMLInputElement;
@@ -115,7 +115,7 @@ describe('Content Script Replacer', () => {
     expect(input.value).toBe('/email');
   });
 
-  describe('Shadow DOM Support', () => {
+  describe('Shadow DOM & Web Components Support (e.g. YouTube Search Bar)', () => {
     it('pierces shadow DOM to find the active element', () => {
       const host = document.createElement('div');
       document.body.appendChild(host);
@@ -128,6 +128,57 @@ describe('Content Script Replacer', () => {
       shadowInput.focus();
       
       expect(getDeepActiveElement()).toBe(shadowInput);
+    });
+
+    it('falls back to host element if shadow root has no activeElement', () => {
+      const host = document.createElement('button');
+      document.body.appendChild(host);
+      host.attachShadow({ mode: 'open' });
+      host.focus();
+
+      expect(getDeepActiveElement()).toBe(host);
+    });
+
+    it('resolves target element from composedPath', () => {
+      const host = document.createElement('div');
+      const shadowRoot = host.attachShadow({ mode: 'open' });
+      const shadowInput = document.createElement('input');
+      shadowRoot.appendChild(shadowInput);
+
+      const fakeEvent = {
+        composedPath: () => [shadowInput, shadowRoot, host, document.body, document, window],
+      } as unknown as KeyboardEvent;
+
+      expect(getTargetElement(fakeEvent)).toBe(shadowInput);
+    });
+
+    it('successfully expands snippet inside a custom Web Component search bar using composedPath', () => {
+      const ytdSearchbox = document.createElement('div');
+      document.body.appendChild(ytdSearchbox);
+      const shadowRoot = ytdSearchbox.attachShadow({ mode: 'open' });
+      const innerInput = document.createElement('input');
+      innerInput.type = 'text';
+      innerInput.value = '/email';
+      innerInput.selectionStart = 6;
+      innerInput.selectionEnd = 6;
+      shadowRoot.appendChild(innerInput);
+
+      // Simulate keyboard event with composedPath pointing to innerInput
+      const event = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        ctrlKey: true,
+        cancelable: true,
+      });
+      Object.defineProperty(event, 'composedPath', {
+        value: () => [innerInput, shadowRoot, ytdSearchbox, document.body, document, window],
+      });
+
+      handleKeyDown(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(innerInput.value).toBe('test@example.com');
+      expect(innerInput.selectionStart).toBe(16);
     });
   });
 
