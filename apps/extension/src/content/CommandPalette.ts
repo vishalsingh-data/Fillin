@@ -1,5 +1,6 @@
 import { Snippet } from '@fillin/shared';
 import { AdapterFactory } from './adapters/AdapterFactory';
+import { GoogleDocsAdapter } from './adapters/GoogleDocsAdapter';
 import { statsService } from '../services/StatsService';
 import { getDeepActiveElement } from './index';
 
@@ -83,8 +84,12 @@ export class CommandPalette {
   }
 
   private insertSnippet(snippet: Snippet) {
-    const el = this.targetElement;
+    let el = this.targetElement;
     this.close();
+
+    if (!el && GoogleDocsAdapter.isGoogleDocs()) {
+      el = document.querySelector('.docs-texteventtarget-iframe') || document.body;
+    }
 
     if (!el) return;
 

@@ -1,5 +1,6 @@
 import { detectTrigger, Snippet } from '@fillin/shared';
 import { AdapterFactory } from './adapters/AdapterFactory';
+import { GoogleDocsAdapter } from './adapters/GoogleDocsAdapter';
 import { statsService } from '../services/StatsService';
 import { commandPalette } from './CommandPalette';
 
@@ -65,8 +66,25 @@ export function handleKeyDown(e: KeyboardEvent) {
   if (isPaletteShortcut) {
     e.preventDefault();
     e.stopPropagation();
-    commandPalette.open(targetEl);
+    if (typeof window !== 'undefined' && window.self !== window.top) {
+      try {
+        window.top?.postMessage({ type: 'FILLIN_OPEN_PALETTE' }, '*');
+      } catch {
+        commandPalette.open(targetEl);
+      }
+    } else {
+      commandPalette.open(targetEl);
+    }
     return;
+  }
+
+  // Google Docs buffer recording (for printable characters & Backspace)
+  if (GoogleDocsAdapter.isGoogleDocs() && GoogleDocsAdapter.isDocsCanvas(targetEl)) {
+    if (e.key === 'Backspace') {
+      GoogleDocsAdapter.getInstance().recordKey('Backspace');
+    } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1) {
+      GoogleDocsAdapter.getInstance().recordKey(e.key);
+    }
   }
 
   // Shortcut 2: Trigger expansion (Ctrl + Space)
@@ -89,6 +107,33 @@ export function handleKeyDown(e: KeyboardEvent) {
         adapter.replaceText(detection.start, detection.end, snippet.content, snippet.isHtml);
         statsService.recordExpansion(detection.trigger.length, snippet.content.length);
       }
+    }
+  }
+}
+
+export function initGoogleDocsObserver() {
+  if (typeof document === 'undefined' || !GoogleDocsAdapter.isGoogleDocs()) return;
+
+  const attachToIframe = () => {
+    const iframe = document.querySelector('iframe.docs-texteventtarget-iframe') as HTMLIFrameElement | null;
+    if (iframe && iframe.contentDocument) {
+      try {
+        iframe.contentDocument.removeEventListener('keydown', handleKeyDown, true);
+        iframe.contentDocument.addEventListener('keydown', handleKeyDown, true);
+      } catch {
+        // Cross-origin fallback
+      }
+    }
+  };
+
+  attachToIframe();
+
+  if (typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver(() => {
+      attachToIframe();
+    });
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
     }
   }
 }
@@ -118,4 +163,14 @@ if (typeof document !== 'undefined') {
   }
 
   document.addEventListener('keydown', handleKeyDown, true);
+  initGoogleDocsObserver();
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('message', (event) => {
+      if (event.data?.type === 'FILLIN_OPEN_PALETTE') {
+        const activeTarget = getTargetElement() || document.activeElement;
+        commandPalette.open(activeTarget);
+      }
+    });
+  }
 }

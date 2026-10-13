@@ -23,3 +23,15 @@ Many modern web components encapsulate their inputs inside a Shadow DOM, shieldi
 ## 4. Asynchronous Storage Syncing
 
 The background snippets are synced to the content script using `chrome.storage.onChanged`. If a user creates a new snippet in the popup, there is a theoretical delay (usually < 10ms) before the content script receives the update. The content script deliberately maintains a local cache so that it does not need to pause and `await` a storage call during every single `Ctrl+Space` keydown event, prioritizing fluid typing over instantaneous syncing.
+
+## 5. Google Docs (Canvas-Based Rendering)
+
+Unlike standard web pages that render editable text directly into DOM nodes, Google Docs uses an **HTML5 Canvas** (`.kix-canvas-tile-content`) for its document surface and intercepts keystrokes via a dedicated event target iframe (`.docs-texteventtarget-iframe`). Because the document text is not kept in any DOM node, standard DOM readers return empty strings.
+
+**Workaround Applied**: We implemented `GoogleDocsAdapter`, which:
+- Maintains an ephemeral, strictly local rolling buffer (max 30 characters) scoped only to `docs.google.com/document/`.
+- Automatically resets on mouse click anywhere on the page or when navigating with arrow keys to ensure privacy and prevent stale triggers.
+- Atomically deletes matched triggers via `document.execCommand('delete')` loops on Docs' event target and inserts snippet text via `document.execCommand('insertText')`.
+- Seamlessly integrates with the In-Page Command Palette (`Cmd/Ctrl + Shift + K`) for direct snippet insertion without requiring typed triggers.
+- Smart context switching: accurately routes document title inputs and comments to standard DOM adapters while reserving `GoogleDocsAdapter` for the main document canvas.
+

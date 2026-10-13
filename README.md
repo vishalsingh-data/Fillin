@@ -34,10 +34,12 @@ Whether you're typing your email (`/email`), a canned customer support response 
 -  **Local Gamification (Keystrokes & Time Saved)**: Real-time counter displayed in the popup tracking total keystrokes and minutes saved—calculated and stored 100% locally.
 -  **Tags & Category Organization**: Categorize snippets with `#tags` (e.g., `#email`, `#work`, `#dev`) and filter your library with 1 click.
 -  **1-Click JSON Portability & Starter Pack**: Instant local export and import for hassle-free backup, plus a pre-bundled starter pack with popular productivity shortcuts.
--  **Universal DOM Adapters**:
+-  **Universal DOM & Canvas Adapters**:
   - **Standard Inputs & Textareas**: Full support for `<input>` and `<textarea>` elements.
   - **React-Controlled Fields**: Bypasses React's internal value setter override (`Object.getOwnPropertyDescriptor`) so synthetic events bubble naturally.
-  - **Rich-Text & ContentEditable Editors**: Native support for complex wrappers like Notion, Gmail, and Google Docs (`isContentEditable`).
+  - **Rich-Text & ContentEditable Editors**: Native support for complex wrappers like Notion, Gmail, and rich text editors (`isContentEditable`).
+  - **Web Components & Shadow DOM**: Pierces Shadow DOM boundaries (e.g., YouTube search bar) and dispatches composed input/change events across shadow boundaries.
+  - **Google Docs Canvas Adapter**: Dedicated adapter with an ephemeral, privacy-first keystroke buffer and clipboard bridge tailored for Google Docs' custom HTML5 canvas rendering engine.
   - **Restricted Inputs**: Automatically handles cursor position calculation for HTML5 input types (`search`, `url`, `tel`).
 -  **Zero Data Collection**: Operates strictly on `chrome.storage.local`. No typing data or keystrokes ever leave your browser.
 -  **Minimal Popup UI**: Sleek, modern monochromatic extension popup to create, edit, search, and manage shortcuts effortlessly.
@@ -214,7 +216,7 @@ Developers contributing to Fillin must adhere to the rules defined in [`AGENTS.m
 ##  Frequently Asked Questions (FAQ)
 
 **Where does Fillin work?**  
-Fillin natively supports text boxes, forms, and rich-text editors (like Gmail, Notion, and Jira) within webpages. For maximum privacy and zero friction, it intentionally stays out of your browser's native URL bar and settings pages.
+Fillin natively supports text inputs, forms, and rich-text editors everywhere across the web—including **Google Docs**, **YouTube**, **Gmail**, **Notion**, **GitHub**, and **Jira**. For maximum privacy and zero friction, it intentionally stays out of your browser's native URL address bar and internal browser settings pages.
 
 **Is my data secure?**  
 Absolutely. Fillin has zero remote analytics and no backend database. Your snippets are stored 100% locally in your browser, and keystrokes are processed entirely within the tab's secure sandbox.

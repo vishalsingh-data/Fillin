@@ -3,9 +3,75 @@ import { TextInputAdapter } from './TextInputAdapter';
 import { ContentEditableAdapter } from './ContentEditableAdapter';
 import { AdapterFactory } from './AdapterFactory';
 
+import { GoogleDocsAdapter } from './GoogleDocsAdapter';
+
 describe('Input Adapters', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
+  });
+
+  describe('GoogleDocsAdapter', () => {
+    let adapter: GoogleDocsAdapter;
+
+    beforeEach(() => {
+      adapter = GoogleDocsAdapter.getInstance();
+      adapter.resetBuffer();
+    });
+
+    it('records keys and manages rolling buffer', () => {
+      adapter.recordKey('/');
+      adapter.recordKey('e');
+      adapter.recordKey('m');
+      adapter.recordKey('a');
+      adapter.recordKey('i');
+      adapter.recordKey('l');
+
+      expect(adapter.getText()).toBe('/email');
+      expect(adapter.getCursorPosition()).toBe(6);
+
+      adapter.recordKey('Backspace');
+      expect(adapter.getText()).toBe('/emai');
+    });
+
+    it('resets buffer cleanly', () => {
+      adapter.recordKey('/');
+      adapter.recordKey('s');
+      adapter.resetBuffer();
+
+      expect(adapter.getText()).toBe('');
+      expect(adapter.getCursorPosition()).toBe(0);
+    });
+
+    it('executes delete commands and inserts replacement text', () => {
+      const deleteCommands: string[] = [];
+      let insertedText = '';
+
+      // Mock execCommand
+      document.execCommand = (commandId: string, _showUI?: boolean, value?: string) => {
+        if (commandId === 'delete') {
+          deleteCommands.push('delete');
+          return true;
+        }
+        if (commandId === 'insertText') {
+          insertedText = value || '';
+          return true;
+        }
+        return false;
+      };
+
+      adapter.recordKey('/');
+      adapter.recordKey('e');
+      adapter.recordKey('m');
+      adapter.recordKey('a');
+      adapter.recordKey('i');
+      adapter.recordKey('l');
+
+      adapter.replaceText(0, 6, 'test@example.com');
+
+      expect(deleteCommands.length).toBe(6);
+      expect(insertedText).toBe('test@example.com');
+      expect(adapter.getText()).toBe('');
+    });
   });
 
   describe('TextInputAdapter', () => {
@@ -121,6 +187,41 @@ describe('Input Adapters', () => {
       const div = document.createElement('div');
       expect(AdapterFactory.getAdapter(div)).toBeNull();
       expect(AdapterFactory.getAdapter(null)).toBeNull();
+    });
+
+    it('returns GoogleDocsAdapter when on Google Docs canvas', () => {
+      const origLocation = window.location;
+      delete (window as any).location;
+      window.location = {
+        hostname: 'docs.google.com',
+        pathname: '/document/d/12345/edit',
+      } as any;
+
+      const docsCanvas = document.createElement('div');
+      docsCanvas.className = 'kix-appview-editor';
+      document.body.appendChild(docsCanvas);
+
+      expect(AdapterFactory.getAdapter(docsCanvas)).toBeInstanceOf(GoogleDocsAdapter);
+
+      window.location = origLocation;
+    });
+
+    it('returns TextInputAdapter when on Google Docs title input', () => {
+      const origLocation = window.location;
+      delete (window as any).location;
+      window.location = {
+        hostname: 'docs.google.com',
+        pathname: '/document/d/12345/edit',
+      } as any;
+
+      const titleInput = document.createElement('input');
+      titleInput.className = 'docs-title-input';
+      titleInput.type = 'text';
+      document.body.appendChild(titleInput);
+
+      expect(AdapterFactory.getAdapter(titleInput)).toBeInstanceOf(TextInputAdapter);
+
+      window.location = origLocation;
     });
   });
 });
